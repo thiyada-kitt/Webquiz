@@ -41,11 +41,11 @@ function WriteExam() {
     }
   };
 
+    const [timeUsed, setTimeUsed] = React.useState(0);
   const calculateResult = async () => {
     try {
       let correctAnswers = [];
       let wrongAnswers = [];
-
       questions.forEach((question, index) => {
         if (question.correctOption === selectedOptions[index]) {
           correctAnswers.push(question);
@@ -63,6 +63,7 @@ function WriteExam() {
         correctAnswers,
         wrongAnswers,
         verdict,
+        timeUsed
       };
       setResult(tempResult);
       dispatch(ShowLoading());
@@ -88,6 +89,7 @@ function WriteExam() {
     const intervalId = setInterval(() => {
       if (totalSeconds > 0) {
         totalSeconds = totalSeconds - 1;
+        setTimeUsed((time) => time += 1);
         setSecondsLeft(totalSeconds);
       } else {
         setTimeUp(true);
