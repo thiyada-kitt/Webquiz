@@ -46,9 +46,11 @@ function WriteExam() {
     try {
       let correctAnswers = [];
       let wrongAnswers = [];
+      let marks = 0;
       questions.forEach((question, index) => {
         if (question.correctOption === selectedOptions[index]) {
           correctAnswers.push(question);
+          marks+=0;
         } else {
           wrongAnswers.push(question);
         }
@@ -59,9 +61,12 @@ function WriteExam() {
         verdict = "Fail";
       }
 
+      marks = correctAnswers.length;
+
       const tempResult = {
         correctAnswers,
         wrongAnswers,
+        marks,
         verdict,
         timeUsed
       };

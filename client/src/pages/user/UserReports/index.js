@@ -7,7 +7,11 @@ import { getAllReportsByUser } from "../../../apicalls/reports";
 import { useEffect } from "react";
 import moment from "moment";
 
+
+
 function UserReports() {
+
+
   const [reportsData, setReportsData] = React.useState([]);
   const dispatch = useDispatch();
   const columns = [
@@ -43,6 +47,11 @@ function UserReports() {
       dataIndex: "verdict",
       render: (text, record) => <>{record.result.verdict}</>,
     },
+    {
+      title: "Total time",
+      dataIndex: "timeUsed",
+      render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
+    }
   ];
 
   const getData = async () => {

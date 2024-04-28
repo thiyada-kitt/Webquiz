@@ -68,6 +68,53 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
   }
 });
 
+// get all reports (sort for leaderboard)
+router.post("/get-leaderboards", authMiddleware, async (req, res) => {
+  try {
+    const { examName, userName } = req.body;
+
+    const exams = await Exam.find({
+      name: {
+        $regex: examName,
+      },
+    });
+
+    const matchedExamIds = exams.map((exam) => exam._id);
+
+    const users = await User.find({
+      name: {
+        $regex: userName,
+      },
+    });
+
+    const matchedUserIds = users.map((user) => user._id);
+
+    const reports = await Report.find({
+      exam: {
+        $in: matchedExamIds,
+      },
+      user: {
+        $in: matchedUserIds,
+      },
+    })
+      .populate("exam")
+      .populate("user")
+      .sort({ "result.marks": -1, "result.timeUsed": 1, createdAt: 1 },); // Sorting uncompleted
+    res.send({
+      message: "Attempts fetched successfully",
+      data: reports,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+});
+
+
 // get all reports by user
 router.post("/get-all-reports-by-user", authMiddleware, async (req, res) => {
   try {

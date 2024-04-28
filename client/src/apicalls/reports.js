@@ -20,6 +20,16 @@ export const getAllReports = async (filters) => {
     }
 }
 
+// get leaderboards reports
+export const getLeaderboards = async (filters) => {
+    try {
+        const response = await axiosInstance.post("/api/reports/get-leaderboards" , filters);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 // get all reports by user
 export const getAllReportsByUser = async () => {
     try {
