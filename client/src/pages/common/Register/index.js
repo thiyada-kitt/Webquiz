@@ -39,7 +39,7 @@ function Register() {
               <input type="text" />
             </Form.Item>
             <Form.Item name="email" label="Email">
-              <input type="text" />
+              <input type="email" />
             </Form.Item>
             <Form.Item name="password" label="Password">
               <input type="password" />

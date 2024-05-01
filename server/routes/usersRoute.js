@@ -94,4 +94,34 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
   }
 });
 
+
+
+
+router.post("/update-user-info", authMiddleware, async(req, res) => {
+  try{ // Brute force updates, createdAt attributes in user model
+    console.log(req.body.password)
+    if (req.body.createdAt === true){ // Password changes, update username and password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      req.body.password= hashedPassword;
+      console.log(req.body.password)
+      await User.findByIdAndUpdate(req.body._id, {name: req.body.name, password: req.body.password});
+    }
+    else{ // Password doesn't change, update only username
+      await User.findByIdAndUpdate(req.body._id, {name: req.body.name});
+    }
+    res.send({
+      message: "User information edited successfully",
+      success: true,
+    });
+  }
+  catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+});
+
 module.exports = router;

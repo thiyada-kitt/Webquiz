@@ -26,3 +26,12 @@ export const getUserInfo = async () => {
         return error.response.data;
     }
 }
+
+export const updateUserInfo = async (payload) => {
+    try {
+        const response = await axiosInstance.post('/api/users/update-user-info', payload);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

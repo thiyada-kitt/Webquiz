@@ -36,7 +36,6 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
-        getExamsData();
       } else {
         message.error(response.message);
       }
