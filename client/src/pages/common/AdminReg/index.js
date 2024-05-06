@@ -2,7 +2,7 @@ import { Form, message } from "antd";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../../../apicalls/users";
+import { registerAdmin } from "../../../apicalls/admin";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 
 function Register() {
@@ -11,7 +11,7 @@ function Register() {
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
-      const response = await registerUser(values);
+      const response = await registerAdmin(values);
 
       dispatch(HideLoading());
       if (response.success) {
@@ -27,11 +27,11 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen bg-primary">
+    <div className="flex justify-center items-center h-screen w-screen bg-adminReg">
       <div className="card w-400 p-3 bg-white">
         <div className="flex flex-col">
           <h1 className="text-2xl">
-            LEAENING QUIZ<i class="ri-user-add-line"></i>
+            LEAENING QUIZ (Admin)<i class="ri-user-add-line"></i>
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
@@ -52,8 +52,7 @@ function Register() {
               >
                 Register
               </button>
-              <Link to="/login">Already a member? Login</Link>
-              <Link to="/adminreg">Want to manage as an admin? Click here</Link>
+              <Link to="/login">Already an admin? Login</Link>
             </div>
           </Form>
         </div>

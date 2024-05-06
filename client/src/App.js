@@ -19,6 +19,7 @@ import UserReports from "./pages/user/UserReports";
 import AdminReports from "./pages/admin/AdminReports";
 import Leaderboard from "./feature/leaderboard"
 import Profile from "./pages/common/Profile/Profile"
+import AdminReg from "./pages/common/AdminReg"
 
 function App() {
   const { loading } = useSelector((state) => state.loader);
@@ -30,6 +31,7 @@ function App() {
           {/* Common Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/adminreg" element={<AdminReg/>}/>
 
           {/* User Routes */}
           <Route

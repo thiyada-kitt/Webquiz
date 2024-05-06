@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/userModel");
+const Admin = require("../models/adminModel")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -19,6 +20,7 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword;
+    req.body.isAdmin = true;
 
     // create new user
     const newUser = new User(req.body);
@@ -106,9 +108,15 @@ router.post("/update-user-info", authMiddleware, async(req, res) => {
       req.body.password= hashedPassword;
       console.log(req.body.password)
       await User.findByIdAndUpdate(req.body._id, {name: req.body.name, password: req.body.password});
+      if (req.body.isAdmin === true){
+        await Admin.findOneAndUpdate({email: req.body.email}, {name: req.body.name, password: req.body.password});
+      }
     }
     else{ // Password doesn't change, update only username
       await User.findByIdAndUpdate(req.body._id, {name: req.body.name});
+      if (req.body.isAdmin === true){
+        await Admin.findOneAndUpdate({email: req.body.email}, {name: req.body.name});
+      }
     }
     res.send({
       message: "User information edited successfully",
