@@ -11,7 +11,7 @@ const adminSchema = new mongoose.Schema(
           type: String,
           required: true,
           unique: true,
-          default: "admin@admin.com"
+          default: "admin@gmail.com"
         },
         password: {
           type: String,

@@ -104,7 +104,7 @@ function App() {
               <button onClick={search}>Search</button>
             </div> {/* Filter Box */}
             <div className="grid overflow-y-auto grid-flow-row">
-                {/* ?.map((props) =>) 
+                {/* ?.map((props) =>)
                 <div className="flex justify-between">
                     <h1 className='text-xl font-bold'>(Rank)</h1>
                     <h1 className='text-xl font-bold'>(Username)</h1>
@@ -112,7 +112,7 @@ function App() {
                     <h1 className='text-xl font-bold'>(Time)</h1>
                 </div>Display Plays */}
                 <Table columns={columns} dataSource={setofResults} />
-            </div>  
+            </div>
         </div>
     )
 }

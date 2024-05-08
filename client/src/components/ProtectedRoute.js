@@ -54,7 +54,7 @@ function ProtectedRoute({ children }) {
       },
     },
 
-    
+
   ];
 
   const adminMenu = [

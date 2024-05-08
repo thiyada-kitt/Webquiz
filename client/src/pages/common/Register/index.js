@@ -27,33 +27,33 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen bg-primary">
+    <div className="flex justify-center items-center h-screen w-screen bg-blue-background">
       <div className="card w-400 p-3 bg-white">
         <div className="flex flex-col">
-          <h1 className="text-2xl">
-            LEAENING QUIZ<i class="ri-user-add-line"></i>
+          <h1 className="text-5xl text-center font-bold">
+            Kaheet!
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
-            <Form.Item name="name" label="Name">
+            <Form.Item name="name" label="ชื่อผู้ใช้">
               <input type="text" />
             </Form.Item>
-            <Form.Item name="email" label="Email">
+            <Form.Item name="email" label="อีเมล">
               <input type="email" />
             </Form.Item>
-            <Form.Item name="password" label="Password">
+            <Form.Item name="password" label="รหัสผ่าน">
               <input type="password" />
             </Form.Item>
 
             <div className="flex flex-col gap-2">
               <button
                 type="submit"
-                className="primary-contained-btn mt-2 w-100"
+                className="primarya-contained-btn mt-2 w-100"
               >
-                Register
+                สมัครสมาชิก
               </button>
-              <Link to="/login">Already a member? Login</Link>
-              <Link to="/adminreg">Want to manage as an admin? Click here</Link>
+              <Link to="/login">มีบัญชีอยู่แล้ว? ต้องการเข้าสู่ระบบ</Link>
+              <Link to="/adminreg">เข้าสู่ระบบแอดมิน</Link>
             </div>
           </Form>
         </div>

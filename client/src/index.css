@@ -3,3 +3,30 @@
 * {
   font-family: "Montserrat", sans-serif !important;
 }
+.card {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.bg-blue-background {
+  background-image: url("bgblue.png");
+  background-size: cover;
+  background-position: center;
+}
+.bg-purple-background {
+  background-image: url("bgpurple.png");
+  background-size: cover;
+  background-position: center;
+}
+.primarya-contained-btn {
+  background-color: #3D3c3A;
+  color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.primarya-contained-btn:hover {
+  background-color: black;
+}

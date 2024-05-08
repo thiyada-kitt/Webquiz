@@ -31,7 +31,7 @@ function App() {
           {/* Common Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/adminreg" element={<AdminReg/>}/>
+          <Route path="/adminreg" element={<AdminReg/>} />
 
           {/* User Routes */}
           <Route
@@ -119,8 +119,8 @@ function App() {
           />
 
           {/*Global routes*/}
-          <Route 
-            path="/leaderboard" 
+          <Route
+            path="/leaderboard"
             element={
               <ProtectedRoute>
                 <Leaderboard/>
