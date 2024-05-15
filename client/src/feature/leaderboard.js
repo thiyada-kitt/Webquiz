@@ -101,6 +101,7 @@ const filterOption = (input: string, option?: { label: string; value: string }) 
             <PageTitle title="Leaderboards"/>
             <div>
               <select onChange={updateSelect}>
+              <option selected hidden>--- Select ---</option>
                 {quiz.map((quiz)=>
                   <option value={quiz.name}>{quiz.name}</option>
                 )}
