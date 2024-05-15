@@ -51,6 +51,11 @@ function UserReports() {
       title: "Total time",
       dataIndex: "timeUsed",
       render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
+    },
+    {
+      title: "Total time",
+      dataIndex: "timeUsed",
+      render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
     }
   ];
 

@@ -10,7 +10,7 @@ export const loginAdmin = async (payload) => {
 
 export const registerAdmin = async (payload) => {
   try {
-     const response = await axiosInstance.post("/api/admins/register", payload);
+     const response = await axiosInstance.post("/api/users/register-admin", payload);
      return response.data;
   } catch (error) {
      return error.response.data;

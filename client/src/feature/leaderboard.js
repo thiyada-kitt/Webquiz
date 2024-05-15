@@ -6,6 +6,7 @@ import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import { getAllReports, getLeaderboards } from "../apicalls/reports";
 import { useEffect } from "react";
 import { getAllExams } from "../apicalls/exams";
+import {Select} from "antd";
 
 
 // ต้องมีการ Sort แยกข้อมูลคนรายคน
@@ -57,7 +58,11 @@ function App() {
   const updateSelect = (evt) => {
     setFilters({...filters, examName: evt.target.value});
   }
-
+/*
+  // Filter `option.label` match the user type `input`
+const filterOption = (input: string, option?: { label: string; value: string }) =>
+(option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+*/
   const getData = async () => {
     let userName = []; // Initialize Users
     let information = []; // Information of User to be pushed into array
@@ -96,13 +101,16 @@ function App() {
             <PageTitle title="Leaderboards"/>
             <div>
               <select onChange={updateSelect}>
-                <option selected hidden>--- Select ---</option>
                 {quiz.map((quiz)=>
                   <option value={quiz.name}>{quiz.name}</option>
                 )}
               </select>
               <button onClick={search}>Search</button>
             </div> {/* Filter Box */}
+            <Select
+                showSearch
+                placeholder="--- Select ---"
+              />
             <div className="grid overflow-y-auto grid-flow-row">
                 {/* ?.map((props) =>) 
                 <div className="flex justify-between">
