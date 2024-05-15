@@ -10,7 +10,7 @@ router.post("/add-report", authMiddleware, async (req, res) => {
     const newReport = new Report(req.body);
     await newReport.save();
     res.send({
-      message: "Attempt added successfully",
+      message: "เพิ่มข้อมูล",
       success: true,
     });
   } catch (error) {
@@ -55,7 +55,7 @@ router.post("/get-all-reports", authMiddleware, async (req, res) => {
       .populate("user")
       .sort({ createdAt: -1 });
     res.send({
-      message: "Attempts fetched successfully",
+      message: "ดึงข้อมูล",
       data: reports,
       success: true,
     });
@@ -101,7 +101,7 @@ router.post("/get-leaderboards", authMiddleware, async (req, res) => {
       .populate("user")
       .sort({ "result.marks": -1, "result.timeUsed": 1, createdAt: 1 },); // Sorting uncompleted
     res.send({
-      message: "Attempts fetched successfully",
+      message: "ดึงข้อมูล",
       data: reports,
       success: true,
     });
@@ -123,7 +123,7 @@ router.post("/get-all-reports-by-user", authMiddleware, async (req, res) => {
       .populate("user")
       .sort({ createdAt: -1 });
     res.send({
-      message: "Attempts fetched successfully",
+      message: "ดึงข้อมูล",
       data: reports,
       success: true,
     });

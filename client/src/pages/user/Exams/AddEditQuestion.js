@@ -55,7 +55,7 @@ function AddEditQuestion({
 
   return (
     <Modal
-      title={selectedQuestion ? "Edit Question" : "Add Question"}
+      title={selectedQuestion ? "แก้ไขคำถาม" : "เพิ่มคำถาม"}
       visible={showAddEditQuestionModal}
       footer={false}
       onCancel={() => {
@@ -73,26 +73,26 @@ function AddEditQuestion({
             correctOption: selectedQuestion?.correctOption,
         }}
       >
-        <Form.Item name="name" label="Question">
+        <Form.Item name="name" label="คำถาม">
           <input type="text" />
         </Form.Item>
-        <Form.Item name="correctOption" label="Correct Option">
+        <Form.Item name="correctOption" label="คำตอบ">
           <input type="text" />
         </Form.Item>
 
         <div className="flex gap-3">
-          <Form.Item name="A" label="Option A">
+          <Form.Item name="A" label="ตัวเลือก ก">
             <input type="text" />
           </Form.Item>
-          <Form.Item name="B" label="Option B">
+          <Form.Item name="B" label="ตัวเลือก ข">
             <input type="text" />
           </Form.Item>
         </div>
         <div className="flex gap-3">
-          <Form.Item name="C" label="Option C">
+          <Form.Item name="C" label="ตัวเลือก ค">
             <input type="text" />
           </Form.Item>
-          <Form.Item name="D" label="Option D">
+          <Form.Item name="D" label="ตัวเลือก ง">
             <input type="text" />
           </Form.Item>
         </div>
@@ -103,9 +103,9 @@ function AddEditQuestion({
             type="button"
             onClick={() => setShowAddEditQuestionModal(false)}
           >
-            Cancel
+            ยกเลิก
           </button>
-          <button className="primary-contained-btn">Save</button>
+          <button className="primary-contained-btn">บันทึก</button>
         </div>
       </Form>
     </Modal>

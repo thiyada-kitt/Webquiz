@@ -7,7 +7,7 @@ function Instructions({ examData, setView, startTimer }) {
     <div className="flex flex-col items-center gap-5">
       <ul className="flex flex-col gap-1">
         <h1 className="text-2xl underline">Instructions</h1>
-        <li>Exam must be completed in {examData.duration} secons.</li>
+        <li>Exam must be completed in {examData.duration} วินาที</li>
         <li>
           Exam will be submitted automatically after {examData.duration}{" "}
           seconds.
@@ -20,11 +20,11 @@ function Instructions({ examData, setView, startTimer }) {
           questions.
         </li>
         <li>
-          Total marks of the exam is{" "}
+          คะแนนทั้งหมดในแบบทดสอบนี้คือ {" "}
           <span className="font-bold">{examData.totalMarks}</span>.
         </li>
         <li>
-          Passing marks of the exam is{" "}
+          คะแนนผ่านที่ {" "}
           <span className="font-bold">{examData.passingMarks}</span>.
         </li>
       </ul>
@@ -33,7 +33,7 @@ function Instructions({ examData, setView, startTimer }) {
         <button className="primary-outlined-btn"
          onClick={()=>navigate('/')}
         >
-              CLOSE
+              ปิด
         </button>
         <button
           className="primary-contained-btn"
@@ -42,7 +42,7 @@ function Instructions({ examData, setView, startTimer }) {
             setView("questions");
           }}
         >
-          Start Exam
+          เล่น
         </button>
       </div>
     </div>

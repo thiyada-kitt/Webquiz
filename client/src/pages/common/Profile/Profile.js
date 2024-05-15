@@ -11,7 +11,7 @@ function App(){
     const [password, setPassword] = useState("") // Password Hook
     const [confirmedPassword, setConfirmedPassword] = useState("") // Confirmed password hook
     const [isChangePassword, setIsChangePassword] = useState(false);
-    
+
     const dispatch = useDispatch();
 
     const nameChange = (evt) => {
@@ -42,12 +42,12 @@ function App(){
         dispatch(ShowLoading());
         if (isChangePassword){
           if (password === "" || confirmedPassword === ""){ // Check if password and confirmed password is not empty
-            message.error("Please fill in passwords.");
+            message.error("โปรดกรอกรหัสผ่าน");
             dispatch(HideLoading());
             return;
           }
           if (password !== confirmedPassword){ // Check if password and confirmed password is equivalent to each other
-            message.error("Passwords do not match!");
+            message.error("รหัสผ่านไม่ตรงกัน");
             dispatch(HideLoading());
             return;
           }
@@ -96,19 +96,19 @@ function App(){
                     <input className="w-10 border-solid border-black border-4 my-2 w-40" value={userInfo.name} onChange={nameChange}></input>
                 </div>
                 <div className="flex flex-col my-2">
-                  { !isChangePassword ? 
-                    <button type="button" onClick={togglePasswordChange}>Password change</button>
+                  { !isChangePassword ?
+                    <button type="button" onClick={togglePasswordChange}>เปลี่ยนรหัสผ่าน</button>
                   :
                     <>
                       <label>Password</label>
                       <input type="password" className="w-10 border-solid border-black border-4 my-2 w-40" value={password} onChange={passwordChange} required></input>
                       <label className="mt-2">Confirm password</label>
                       <input type="password" className="w-10 border-solid border-black border-4 my-2 w-40" value={confirmedPassword} onChange={confirmedPasswordChange} required></input>
-                      <button type="button" onClick={togglePasswordChange} className="my-2 w-40">Cancel password change</button>
+                      <button type="button" onClick={togglePasswordChange} className="my-2 w-40">ยกเลิกการเปลี่ยนรหัสผ่าน</button>
                     </>
                   }
                 </div>
-                <button className="border-solid border-black border-4 my-2 w-40" type="button" onClick={updateUser}>Confirm changes</button>
+                <button className="border-solid border-black border-4 my-2 w-40" type="button" onClick={updateUser}>ยืนยัน</button>
             </div>
         </div>
     )

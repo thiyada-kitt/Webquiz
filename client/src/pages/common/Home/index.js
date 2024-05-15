@@ -33,7 +33,7 @@ function Home() {
   return (
     user && (
       <div>
-        <PageTitle title={`Hi ${user.name}, Welcome to Quiz Application`} />
+        {/* <PageTitle title={`ยินดีต้อนรับ${user.name}`} /> */}
         <div className="divider"></div>
         <Row gutter={[16, 16]}>
           {exams.map((exam) => (
@@ -41,17 +41,17 @@ function Home() {
               <div className="card-lg flex flex-col gap-1 p-2">
                 <h1 className="text-2xl">{exam?.name}</h1>
 
-                <h1 className="text-md">Category : {exam.category}</h1>
+                <h1 className="text-md">โหมด : {exam.category}</h1>
 
-                <h1 className="text-md">Total Marks : {exam.totalMarks}</h1>
-                <h1 className="text-md">Passing Marks : {exam.passingMarks}</h1>
-                <h1 className="text-md">Duration : {exam.duration}</h1>
+                <h1 className="text-md">คะแนนทั้งหมด : {exam.totalMarks}</h1>
+                <h1 className="text-md">คะแนนผ่าน : {exam.passingMarks}</h1>
+                <h1 className="text-md">เวลาที่กำหนด : {exam.duration}</h1>
 
                 <button
                   className="primary-outlined-btn"
                   onClick={() => navigate(`/user/write-exam/${exam._id}`)}
                 >
-                  Start Exam
+                  เริ่ม
                 </button>
               </div>
             </Col>

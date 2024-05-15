@@ -6,6 +6,7 @@ import { SetUser } from "../redux/usersSlice.js";
 import { useNavigate } from "react-router-dom";
 import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 
+
 function ProtectedRoute({ children }) {
   const { user } = useSelector((state) => state.users);
   const [menu, setMenu] = useState([]);
@@ -15,37 +16,37 @@ function ProtectedRoute({ children }) {
 
   const userMenu = [
     {
-      title: "Home",
+      title: "หน้าแรก",
       paths: ["/", "/user/write-exam"],
       icon: <i className="ri-home-line"></i>,
       onClick: () => navigate("/"),
     },
     {
-      title: "Reports",
+      title: "ประวัติการเล่น",
       paths: ["/user/reports"],
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/user/reports"),
     },
     {
-      title: "Exams",
+      title: "สร้างคำถาม",
       paths: ["/user/exams", "/user/exams/add"],
       icon: <i className="ri-file-list-line"></i>,
       onClick: () => navigate("/user/exams"),
     },
     {
-      title: "Leaderboard",
+      title: "ตารางอันดับ",
       paths: ["/leaderboard"],
-      icon: <i className="ri-file-list-line"></i>,
+      icon: <i className="ri-barricade-line"></i>,
       onClick: () => navigate("/leaderboard"),
     },
+    // {
+    //   title: "โปรไฟล์",
+    //   paths: ["/profile"],
+    //   icon: <i className="ri-user-3-line"></i>,
+    //   onClick: () => navigate("/profile"),
+    // },
     {
-      title: "Profile",
-      paths: ["/profile"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/profile"),
-    },
-    {
-      title: "Logout",
+      title: "ออกจากระบบ",
       paths: ["/logout"],
       icon: <i className="ri-logout-box-line"></i>,
       onClick: () => {
@@ -59,37 +60,37 @@ function ProtectedRoute({ children }) {
 
   const adminMenu = [
     {
-      title: "Home",
+      title: "หน้าแรก",
       paths: ["/", "/admin/write-exam"],
       icon: <i className="ri-home-line"></i>,
       onClick: () => navigate("/"),
     },
     {
-      title: "Exams",
+      title: "สร้างคำถาม",
       paths: ["/admin/exams", "/admin/exams/add"],
       icon: <i className="ri-file-list-line"></i>,
       onClick: () => navigate("/admin/exams"),
     },
     {
-      title: "Reports",
+      title: "ประวัติการเล่น",
       paths: ["/admin/reports"],
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/admin/reports"),
     },
     {
-      title: "Leaderboard",
+      title: "ตารางอันดับ",
       paths: ["/leaderboard"],
-      icon: <i className="ri-file-list-line"></i>,
+      icon: <i className="ri-barricade-line"></i>,
       onClick: () => navigate("/leaderboard"),
     },
+    // {
+    //   title: "โปรไฟล์",
+    //   paths: ["/profile"],
+    //   icon: <i className="ri-user-3-line"></i>,
+    //   onClick: () => navigate("/profile"),
+    // },
     {
-      title: "Profile",
-      paths: ["/profile"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/profile"),
-    },
-    {
-      title: "Logout",
+      title: "ออกจากระบบ",
       paths: ["/logout"],
       icon: <i className="ri-logout-box-line"></i>,
       onClick: () => {
@@ -186,12 +187,12 @@ function ProtectedRoute({ children }) {
                 onClick={() => setCollapsed(false)}
               ></i>
             )}
-            <h1 className="text-2xl text-white">QUIZ Application</h1>
-            <div>
-              <div className="flex gap-1 items-center">
+            <h1 className="text-2xl text-white">Quizuzz!</h1>
+            <div onClick={() => navigate("/profile")} className="cursor-pointer">
+              <div className="flex gap-1 items-center ">
                 <h1 className="text-md text-white">{user?.name}</h1>
               </div>
-              <span>Role : {user?.isAdmin ? "Admin" : "User"}</span>
+                {user?.isAdmin && <span>ผู้ดูแลระบบ</span>}
             </div>
           </div>
           <div className="content">{children}</div>

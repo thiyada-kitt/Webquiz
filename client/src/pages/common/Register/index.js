@@ -31,7 +31,7 @@ function Register() {
       <div className="card w-400 p-3 bg-white">
         <div className="flex flex-col">
           <h1 className="text-5xl text-center font-bold">
-            Kaheet!
+            Quizuzz!
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
@@ -53,7 +53,7 @@ function Register() {
                 สมัครสมาชิก
               </button>
               <Link to="/login">มีบัญชีอยู่แล้ว? ต้องการเข้าสู่ระบบ</Link>
-              <Link to="/adminreg">เข้าสู่ระบบแอดมิน</Link>
+              <Link to="/adminreg">สร้างบัญชีผู้ใช้แอดมิน</Link>
             </div>
           </Form>
         </div>

@@ -13,7 +13,7 @@ router.post("/register", async (req, res) => {
     if (userExists) {
       return res
         .status(200)
-        .send({ message: "User already exists", success: false });
+        .send({ message: "เข้าสู่ระบบล้มเหลว", success: false });
     }
 
     // hash password
@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User(req.body);
     await newUser.save();
     res.send({
-      message: "User created successfully",
+      message: "สร้างบัญชีผู้ใช้เสร็จสิ้น",
       success: true,
     });
   } catch (error) {
@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res
         .status(200)
-        .send({ message: "User does not exist", success: false });
+        .send({ message: "เข้าสู่ระบบล้มเหลว", success: false });
     }
 
     // check password
@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
     if (!validPassword) {
       return res
         .status(200)
-        .send({ message: "Invalid password", success: false });
+        .send({ message: "รหัสผ่านไม่ถูกต้อง", success: false });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
     });
 
     res.send({
-      message: "User logged in successfully",
+      message: "ยินดีต้อนรับเข้าสู่ระบบ",
       success: true,
       data: token,
     });
@@ -83,7 +83,7 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.body.userId);
     res.send({
-      message: "User info fetched successfully",
+      message: "ดึงข้อมูลผู้ใช้",
       success: true,
       data: user,
     });
@@ -119,7 +119,7 @@ router.post("/update-user-info", authMiddleware, async(req, res) => {
       }
     }
     res.send({
-      message: "User information edited successfully",
+      message: "แก้ไขข้อมูลสำเร็จ",
       success: true,
     });
   }

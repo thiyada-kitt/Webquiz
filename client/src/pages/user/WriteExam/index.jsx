@@ -56,9 +56,9 @@ function WriteExam() {
         }
       });
 
-      let verdict = "Pass";
+      let verdict = "ผ่าน";
       if (correctAnswers.length < examData.passingMarks) {
-        verdict = "Fail";
+        verdict = "ไม่ผ่าน";
       }
 
       marks = correctAnswers.length;

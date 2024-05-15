@@ -47,27 +47,27 @@ function Exams() {
   };
   const columns = [
     {
-      title: "Exam Name",
+      title: "ชื่อแบบทดสอบ",
       dataIndex: "name",
     },
     {
-      title: "Duration",
+      title: "เวลาที่กำหนด",
       dataIndex: "duration",
     },
     {
-      title: "Category",
+      title: "โหมด",
       dataIndex: "category",
     },
     {
-      title: "Total Marks",
+      title: "คะแนนทั้งหมด",
       dataIndex: "totalMarks",
     },
     {
-      title: "Passing Marks",
+      title: "คะแนนผ่าน",
       dataIndex: "passingMarks",
     },
     {
-      title: "Action",
+      title: "แก้ไข",
       dataIndex: "action",
       render: (text, record) => (
         <div className="flex gap-2">
@@ -96,7 +96,7 @@ function Exams() {
           onClick={() => navigate("/admin/exams/add")}
         >
           <i className="ri-add-line"></i>
-          Add Exam
+          เพิ่มแบบทดสอบ
         </button>
       </div>
       <div className="divider"></div>

@@ -30,3 +30,6 @@
 .primarya-contained-btn:hover {
   background-color: black;
 }
+.cursor-pointer {
+  cursor: pointer;
+}

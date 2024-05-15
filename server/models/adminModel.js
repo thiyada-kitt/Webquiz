@@ -5,18 +5,19 @@ const adminSchema = new mongoose.Schema(
         name: {
           type: String,
           required: true,
-          default: "admin"
         },
         email: {
           type: String,
           required: true,
           unique: true,
-          default: "admin@gmail.com"
         },
         password: {
           type: String,
           required: true,
-          default: "1234"
+        },
+        isAdmin: {
+          type: Boolean,
+          default: true,
         },
     },
     {

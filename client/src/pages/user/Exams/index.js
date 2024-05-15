@@ -14,7 +14,7 @@ function Exams() {
   const getExamsData = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await getAllExams();
+      const response = await getExamById();
       dispatch(HideLoading());
       if (response.success) {
         setExams(response.data);
@@ -46,27 +46,27 @@ function Exams() {
   };
   const columns = [
     {
-      title: "Exam Name",
+      title: "ชื่อแบบทดสอบ",
       dataIndex: "name",
     },
     {
-      title: "Duration",
+      title: "เวลาที่กำหนด",
       dataIndex: "duration",
     },
     {
-      title: "Category",
+      title: "โหมด",
       dataIndex: "category",
     },
     {
-      title: "Total Marks",
+      title: "คะแนนทั้งหมด",
       dataIndex: "totalMarks",
     },
     {
-      title: "Passing Marks",
+      title: "คะแนนผ่าน",
       dataIndex: "passingMarks",
     },
     {
-      title: "Action",
+      title: "แก้ไข",
       dataIndex: "action",
       render: (text, record) => (
         <div className="flex gap-2">
@@ -82,20 +82,21 @@ function Exams() {
       ),
     },
   ];
+
   useEffect(() => {
     getExamsData();
   }, []);
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
-        <PageTitle title="Exams" />
+        <PageTitle title="แบบทดสอบ" />
 
         <button
           className="primary-outlined-btn flex items-center"
           onClick={() => navigate("/user/exams/add")}
         >
           <i className="ri-add-line"></i>
-          Add Exam
+          เพิ่มแบบทดสอบ
         </button>
       </div>
       <div className="divider"></div>

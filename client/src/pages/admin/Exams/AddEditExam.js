@@ -95,11 +95,11 @@ function AddEditExam() {
 
   const questionsColumns = [
     {
-      title: "Question",
+      title: "คำถาม",
       dataIndex: "name",
     },
     {
-      title: "Options",
+      title: "ตัวเลือก",
       dataIndex: "options",
       render: (text, record) => {
         return Object.keys(record.options).map((key) => {
@@ -112,7 +112,7 @@ function AddEditExam() {
       },
     },
     {
-      title: "Correct Option",
+      title: "คำตอบ",
       dataIndex: "correctOption",
       render: (text, record) => {
         return ` ${record.correctOption} : ${
@@ -121,7 +121,7 @@ function AddEditExam() {
       },
     },
     {
-      title: "Action",
+      title: "แก้ไข",
       dataIndex: "action",
       render: (text, record) => (
         <div className="flex gap-2">
@@ -145,26 +145,26 @@ function AddEditExam() {
 
   return (
     <div>
-      <PageTitle title={params.id ? "Edit Exam" : "Add Exam"} />
+      <PageTitle title={params.id ? "แก้ไขแบบทดสอบ" : "เพิ่มแบบทดสอบ"} />
       <div className="divider"></div>
 
       {(examData || !params.id) && (
         <Form layout="vertical" onFinish={onFinish} initialValues={examData}>
           <Tabs defaultActiveKey="1">
-            <TabPane tab="Exam Details" key="1">
+            <TabPane tab="รายละเอียดแบบทดสอบ" key="1">
               <Row gutter={[10, 10]}>
                 <Col span={8}>
-                  <Form.Item label="Exam Name" name="name">
+                  <Form.Item label="ชื่อแบบทดสอบ" name="name">
                     <input type="text" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Exam Duration" name="duration">
+                  <Form.Item label="เวลาที่กำหนด" name="duration">
                     <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Category" name="category">
+                  <Form.Item label="โหมด" name="category">
                     <select name="" id="">
                       <option value="">Select Category</option>
                       <option value="Javascript">Javascript</option>
@@ -179,12 +179,12 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Total Marks" name="totalMarks">
+                  <Form.Item label="คะแนนทั้งหมด" name="totalMarks">
                     <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Passing Marks" name="passingMarks">
+                  <Form.Item label="คะแนนผ่าน" name="passingMarks">
                     <input type="number" />
                   </Form.Item>
                 </Col>
@@ -195,22 +195,22 @@ function AddEditExam() {
                   type="button"
                   onClick={() => navigate("/admin/exams")}
                 >
-                  Cancel
+                  ยกเลิก
                 </button>
                 <button className="primary-contained-btn" type="submit">
-                  Save
+                  บันทึก
                 </button>
               </div>
             </TabPane>
             {params.id && (
-              <TabPane tab="Questions" key="2">
+              <TabPane tab="คำถาม" key="2">
                 <div className="flex justify-end">
                   <button
                     className="primary-outlined-btn"
                     type="button"
                     onClick={() => setShowAddEditQuestionModal(true)}
                   >
-                    Add Question
+                    เพิ่มคำถาม
                   </button>
                 </div>
 

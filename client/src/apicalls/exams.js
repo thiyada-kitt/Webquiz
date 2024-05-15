@@ -8,7 +8,7 @@ export const addExam = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 // get all exams
 export const getAllExams = async () => {
@@ -18,7 +18,7 @@ export const getAllExams = async () => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 // get exam by id
 export const getExamById = async (payload) => {
@@ -31,7 +31,7 @@ export const getExamById = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 // edit exam by id
 export const editExamById = async (payload) => {
@@ -44,7 +44,7 @@ export const editExamById = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 // delete exam by id
 export const deleteExamById = async (payload) => {
@@ -57,7 +57,7 @@ export const deleteExamById = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 // add question to exam
 export const addQuestionToExam = async (payload) => {
@@ -70,7 +70,7 @@ export const addQuestionToExam = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 export const editQuestionById = async (payload) => {
   try {
@@ -82,7 +82,7 @@ export const editQuestionById = async (payload) => {
   } catch (error) {
     return error.response.data;
   }
-};
+}
 
 export const deleteQuestionById = async (payload) => {
   try {

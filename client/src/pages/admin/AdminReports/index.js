@@ -16,39 +16,39 @@ function AdminReports() {
   });
   const columns = [
     {
-      title: "Exam Name",
+      title: "ชื่อแบบทดสอบ",
       dataIndex: "examName",
       render: (text, record) => <>{record.exam.name}</>,
     },
     {
-      title: "User Name",
+      title: "ชื่อผู้ใช้",
       dataIndex: "userName",
       render: (text, record) => <>{record.user.name}</>,
     },
     {
-      title: "Date",
+      title: "วันที่ทำแบบทดสอบ",
       dataIndex: "date",
       render: (text, record) => (
         <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
       ),
     },
     {
-      title: "Total Marks",
+      title: "คะแนนทั้งหมด",
       dataIndex: "totalQuestions",
       render: (text, record) => <>{record.exam.totalMarks}</>,
     },
     {
-      title: "Passing Marks",
+      title: "คะแนนผ่าน",
       dataIndex: "correctAnswers",
       render: (text, record) => <>{record.exam.passingMarks}</>,
     },
     {
-      title: "Obtained Marks",
+      title: "คะแนนที่ได้",
       dataIndex: "correctAnswers",
       render: (text, record) => <>{record.result.correctAnswers.length}</>,
     },
     {
-      title: "Verdict",
+      title: "ผลที่ได้รับ",
       dataIndex: "verdict",
       render: (text, record) => <>{record.result.verdict}</>,
     },
@@ -76,7 +76,7 @@ function AdminReports() {
 
   return (
     <div>
-      <PageTitle title="Reports" />
+      <PageTitle title="ประวัติการเล่น" />
       <div className="divider"></div>
       <div className="flex gap-2">
         <input

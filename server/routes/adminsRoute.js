@@ -14,14 +14,14 @@ router.post("/register", async (req, res) => {
     if (userExists) {
       return res
         .status(200)
-        .send({ message: "User or admin with targeted email already exists", success: false });
+        .send({ message: "มีอีเมลนี้อยู๋ในระบบแล้ว", success: false });
     }
 
     // hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword;
-  
+
     // create new admin
     const newAdmin = new Admin(req.body);
     await newAdmin.save();
@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User(req.body);
     await newUser.save();
     res.send({
-      message: "Admin created successfully",
+      message: "สร้างบัญชีแอดมินเสร็จสิ้น",
       success: true,
     });
   } catch (error) {
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
       if (!user) {
         return res
           .status(200)
-          .send({ message: "Admin does not exist", success: false });
+          .send({ message: "เข้าสู่ระบบล้มเหลว", success: false });
       }
 
       // check password
@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
       if (!validPassword) {
         return res
           .status(200)
-          .send({ message: "Invalid password", success: false });
+          .send({ message: "รหัสผ่านผิดพลาด", success: false });
       }
 
       const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, {
@@ -69,7 +69,7 @@ router.post("/login", async (req, res) => {
       });
 
       res.send({
-        message: "Admin logged in successfully",
+        message: "เข้าสู่ระบบผู้ดูแลระบบ",
         success: true,
         data: token,
       });
