@@ -21,29 +21,29 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/"),
     },
     {
-      title: "Reports",
-      paths: ["/user/reports"],
-      icon: <i className="ri-bar-chart-line"></i>,
-      onClick: () => navigate("/user/reports"),
-    },
-    {
       title: "Exams",
       paths: ["/user/exams", "/user/exams/add"],
       icon: <i className="ri-file-list-line"></i>,
       onClick: () => navigate("/user/exams"),
     },
     {
-      title: "Leaderboard",
-      paths: ["/leaderboard"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/leaderboard"),
+      title: "Reports",
+      paths: ["/user/reports"],
+      icon: <i className="ri-bar-chart-line"></i>,
+      onClick: () => navigate("/user/reports"),
     },
     {
-      title: "Profile",
-      paths: ["/profile"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/profile"),
+      title: "Leaderboard",
+      paths: ["/leaderboard"],
+      icon: <i className="ri-barricade-line"></i>,
+      onClick: () => navigate("/leaderboard"),
     },
+    // {
+    //   title: "Profile",
+    //   paths: ["/profile"],
+    //   icon: <i className="ri-file-list-line"></i>,
+    //   onClick: () => navigate("/profile"),
+    // },
     {
       title: "Logout",
       paths: ["/logout"],
@@ -53,8 +53,6 @@ function ProtectedRoute({ children }) {
         navigate("/login");
       },
     },
-
-    
   ];
 
   const adminMenu = [
@@ -79,15 +77,15 @@ function ProtectedRoute({ children }) {
     {
       title: "Leaderboard",
       paths: ["/leaderboard"],
-      icon: <i className="ri-file-list-line"></i>,
+      icon: <i className="ri-barricade-line"></i>,
       onClick: () => navigate("/leaderboard"),
     },
-    {
-      title: "Profile",
-      paths: ["/profile"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/profile"),
-    },
+    // {
+    //   title: "Profile",
+    //   paths: ["/profile"],
+    //   icon: <i className="ri-file-list-line"></i>,
+    //   onClick: () => navigate("/profile"),
+    // },
     {
       title: "Logout",
       paths: ["/logout"],
@@ -186,8 +184,8 @@ function ProtectedRoute({ children }) {
                 onClick={() => setCollapsed(false)}
               ></i>
             )}
-            <h1 className="text-2xl text-white">QUIZ Application</h1>
-            <div>
+            <h1 className="text-2xl text-white">Quizuzz!</h1>
+            <div onClick={() => navigate("/profile")} className="cursor-pointer">
               <div className="flex gap-1 items-center">
                 <h1 className="text-md text-white">{user?.name}</h1>
               </div>
