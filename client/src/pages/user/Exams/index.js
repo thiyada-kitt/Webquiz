@@ -2,19 +2,35 @@ import { message, Table } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteExamById, getAllExams } from "../../../apicalls/exams";
+import { deleteExamById, getAllExams, fetchExambyUserID } from "../../../apicalls/exams";
 import PageTitle from "../../../components/PageTitle";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
+import { getUserInfo } from "../../../apicalls/users";
 
 function Exams() {
   const navigate = useNavigate();
   const [exams, setExams] = React.useState([]);
+  const [userID, setUserID] = React.useState(null);
   const dispatch = useDispatch();
 
-  const getExamsData = async () => {
+  const getUserID = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await getAllExams();
+      const response = await getUserInfo();
+      dispatch(HideLoading())
+      if (response.success){
+        setUserID(response.data._id)
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  };
+
+  const getExamsData = async (user) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await fetchExambyUserID(user);
       dispatch(HideLoading());
       if (response.success) {
         setExams(response.data);
@@ -83,8 +99,10 @@ function Exams() {
     },
   ];
   useEffect(() => {
-    getExamsData();
+    getUserID();
+    getExamsData(userID);
   }, []);
+
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">

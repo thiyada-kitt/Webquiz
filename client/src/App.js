@@ -10,7 +10,8 @@ import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/common/Home";
-import Exams from "./pages/admin/Exams";
+import Exams from "./pages/user/Exams";
+import AdminExams from "./pages/admin/Exams";
 import AddEditExam from "./pages/admin/Exams/AddEditExam";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
@@ -87,7 +88,7 @@ function App() {
             path="/admin/exams"
             element={
               <ProtectedRoute>
-                <Exams />
+                <AdminExams />
               </ProtectedRoute>
             }
           />

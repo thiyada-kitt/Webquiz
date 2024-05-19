@@ -5,6 +5,10 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tempUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+  },
   correctOption: {
     type: String,
     required: true,

@@ -107,6 +107,7 @@ function WriteExam() {
     if (timeUp && view === "questions") {
       clearInterval(intervalId);
       calculateResult();
+      setTimeUp(true);
     }
   }, [timeUp]);
 
@@ -235,6 +236,7 @@ function WriteExam() {
                       setSelectedQuestionIndex(0);
                       setSelectedOptions({});
                       setSecondsLeft(examData.duration);
+                      setTimeUp(false); // Fix retake exams not working properly
                     }}
                   >
                     Retake Exam

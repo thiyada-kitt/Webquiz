@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addQuestionToExam, editQuestionById } from "../../../apicalls/exams";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
+import { getUserInfo } from "../../../apicalls/users";
 
 function AddEditQuestion({
   showAddEditQuestionModal,
@@ -13,6 +14,27 @@ function AddEditQuestion({
     setSelectedQuestion
 }) {
   const dispatch = useDispatch();
+
+  const getUserData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await getUserInfo();
+      dispatch(HideLoading());
+      if (response.success) {
+        setUser(response.data._id)
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  const [user, setUser] = React.useState("") // Mark creator for an exam
+
+    React.useEffect(() => {
+        getUserData();
+    }, []);
+
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
@@ -28,7 +50,8 @@ function AddEditQuestion({
         exam: examId,
       };
 
-      let response
+      console.log(requiredPayload)
+      let response;
         if(selectedQuestion){
             response = await editQuestionById({
                 ...requiredPayload,

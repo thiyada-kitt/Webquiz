@@ -166,5 +166,22 @@ router.post("/delete-question-in-exam", authMiddleware, async (req, res) => {
      }
 });
 
+router.post("/fetch-exam-by-userid", authMiddleware, async (req, res) => {
+  try {
+    const exams = await Exam.find({user: req.body.userId});
+    res.send({
+      message: "Exams fetched successfully",
+      data: exams,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+})
+
 
 module.exports = router;

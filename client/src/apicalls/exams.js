@@ -33,6 +33,18 @@ export const getExamById = async (payload) => {
   }
 };
 
+export const fetchExambyUserID = async(payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/exams/fetch-exam-by-userid",
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 // edit exam by id
 export const editExamById = async (payload) => {
   try {
