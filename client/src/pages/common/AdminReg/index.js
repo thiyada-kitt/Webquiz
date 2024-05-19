@@ -30,8 +30,8 @@ function Register() {
     <div className="flex justify-center items-center h-screen w-screen bg-adminReg">
       <div className="card w-400 p-3 bg-white">
         <div className="flex flex-col">
-          <h1 className="text-2xl">
-            LEAENING QUIZ (Admin)<i class="ri-user-add-line"></i>
+          <h1 className="text-5xl text-center font-bold">
+            Quizuzz! [Admin]
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
@@ -48,7 +48,7 @@ function Register() {
             <div className="flex flex-col gap-2">
               <button
                 type="submit"
-                className="primary-contained-btn mt-2 w-100"
+                className="primarya-contained-btn mt-2 w-100"
               >
                 Register
               </button>

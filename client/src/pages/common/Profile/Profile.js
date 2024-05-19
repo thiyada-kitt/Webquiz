@@ -96,7 +96,7 @@ function App(){
                     <input className="w-10 border-solid border-black border-4 my-2 w-40" value={userInfo.name} onChange={nameChange}></input>
                 </div>
                 <div className="flex flex-col my-2">
-                  { !isChangePassword ? 
+                  { !isChangePassword ?
                     <button type="button" onClick={togglePasswordChange}>Password change</button>
                   :
                     <>

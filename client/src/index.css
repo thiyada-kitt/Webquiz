@@ -3,3 +3,92 @@
 * {
   font-family: "Montserrat", sans-serif !important;
 }
+.cursor-pointer {
+  cursor: pointer;
+  border: 1px solid #fff;
+  padding: 3px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.cursor-pointer:hover {
+  border-color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.primarya-contained-btn {
+  background-color: #3D3c3A;
+  color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.primarya-contained-btn:hover {
+  background-color: black;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ensure it takes the full viewport height */
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 0.5rem; /* Adjust according to your spacing needs */
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.sidebar {
+  width: 250px; /* Adjust according to your design */
+  background-color: #f0f0f0; /* Or your desired background color */
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.active-menu-item {
+  background-color: #ddd; /* Highlight color for active item */
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  padding: 10px;
+  background-color: #333; /* Or your desired header background color */
+  color: white;
+}
+
+.content {
+  padding: 20px;
+  overflow-y: auto; /* Allow content to scroll if it overflows */
+}

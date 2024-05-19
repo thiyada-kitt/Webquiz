@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { Tabs } from "antd";
 import AddEditQuestion from "./AddEditQuestion";
+import { getUserInfo } from "../../../apicalls/users";
 const { TabPane } = Tabs;
 
 function AddEditExam() {
@@ -32,9 +33,13 @@ function AddEditExam() {
         response = await editExamById({
           ...values,
           examId: params.id,
+
         });
       } else {
-        response = await addExam(values);
+        // response = await addExam(values);
+        response = await addExam({...values,
+          user: user
+        });
       }
       if (response.success) {
         message.success(response.message);
@@ -142,6 +147,26 @@ function AddEditExam() {
       ),
     },
   ];
+
+  const getUserData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await getUserInfo();
+      dispatch(HideLoading());
+      if (response.success) {
+        setUser(response.data._id)
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  const [user, setUser] = React.useState(null) // Mark creator for an exam
+
+    useEffect(() => {
+        getUserData();
+    }, []);
 
   return (
     <div>
