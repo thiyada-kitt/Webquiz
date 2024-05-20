@@ -70,7 +70,7 @@ function Exams() {
       dataIndex: "duration",
     },
     {
-      title: "Category",
+      title: "Mode",
       dataIndex: "category",
     },
     {
@@ -101,6 +101,7 @@ function Exams() {
   useEffect(() => {
     getUserID();
     getExamsData(userID);
+    
   }, []);
 
   return (

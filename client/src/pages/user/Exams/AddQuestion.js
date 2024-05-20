@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import { addQuestionToExam, editQuestionById } from "../../../apicalls/exams";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getUserInfo } from "../../../apicalls/users";
+import { addPresetQuestion } from "../../../apicalls/exams";
 
 function AddEditQuestion({
   showAddEditQuestionModal,
   setShowAddEditQuestionModal,
   refreshData,
-  examId,
     selectedQuestion,
     setSelectedQuestion
 }) {
@@ -47,7 +47,7 @@ function AddEditQuestion({
           C: values.C,
           D: values.D,
         },
-        exam: examId,
+        tempUser: user,
       };
 
       console.log(requiredPayload)
@@ -59,7 +59,7 @@ function AddEditQuestion({
             })
         }
         else{
-            response = await addQuestionToExam(requiredPayload);
+            response = await addPresetQuestion(requiredPayload); // Should be fixed here
         }
       if (response.success) {
         message.success(response.message);

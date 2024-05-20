@@ -41,7 +41,7 @@ function Home() {
               <div className="card-lg flex flex-col gap-1 p-2">
                 <h1 className="text-2xl">{exam?.name}</h1>
 
-                <h1 className="text-md">Category : {exam.category}</h1>
+                <h1 className="text-md">Mode : {exam.category}</h1>
 
                 <h1 className="text-md">Total Marks : {exam.totalMarks}</h1>
                 <h1 className="text-md">Passing Marks : {exam.passingMarks}</h1>
