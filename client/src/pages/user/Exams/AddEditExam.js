@@ -187,7 +187,6 @@ function AddEditExam() {
 const onTabClick = (activeKey) => {
   if (activeKey === "2"){
     getExamData();
-    console.log(activeKey)
   }
 }
 

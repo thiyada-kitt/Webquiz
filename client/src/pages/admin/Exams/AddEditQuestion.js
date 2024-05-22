@@ -50,7 +50,6 @@ function AddEditQuestion({
         exam: examId,
       };
 
-      console.log(requiredPayload)
       let response;
         if(selectedQuestion){
             response = await editQuestionById({

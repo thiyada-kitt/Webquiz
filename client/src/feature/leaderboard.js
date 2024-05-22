@@ -7,6 +7,7 @@ import { getAllReports, getLeaderboards } from "../apicalls/reports";
 import { useEffect } from "react";
 import { getAllExams } from "../apicalls/exams";
 import {Select} from "antd";
+import "../stylesheets/custom-components.css";
 
 
 // ต้องมีการ Sort แยกข้อมูลคนรายคน
@@ -55,9 +56,11 @@ function App() {
     }
   };
 
-  const updateSelect = (evt) => {
-    setFilters({...filters, examName: evt.target.value});
-  }
+
+  const updateSearch = (async (value) => {
+    setFilters({...filters, examName: value});
+    search(filters)
+  })
 /*
   // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }) =>
@@ -99,19 +102,24 @@ const filterOption = (input: string, option?: { label: string; value: string }) 
     return(
         <div>
             <PageTitle title="Leaderboards"/>
-            <div>
-              <select onChange={updateSelect}>
-              <option selected hidden>--- Select ---</option>
-                {quiz.map((quiz)=>
-                  <option value={quiz.name}>{quiz.name}</option>
-                )}
-              </select>
-              <button onClick={search}>Search</button>
-            </div> {/* Filter Box */}
+            { quiz &&
             <Select
                 showSearch
                 placeholder="--- Select ---"
-              />
+                onChange={updateSearch}
+                className="searchBox"
+                filterOption={(inputValue, option) =>
+                  option.children
+                    .toString()
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())
+                }
+              >
+                {quiz.map((quizzes) => { return(
+                  <Select.Option key={quizzes._id} value={quizzes.name}>{quizzes.name}</Select.Option>)
+                })}
+            </Select>
+            }
             <div className="grid overflow-y-auto grid-flow-row">
                 {/* ?.map((props) =>) 
                 <div className="flex justify-between">
