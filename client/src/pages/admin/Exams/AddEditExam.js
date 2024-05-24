@@ -223,7 +223,7 @@ const onTabClick = (activeKey) => {
                 <Col span={8}>
                   <Form.Item label="Mode" name="category">
                     <select name="" id="">
-                      <option value="" hidden>Select Category</option>
+                      <option value="" hidden>Select Mode</option>
                       <option value="Competitive">Competitive</option>
                       <option value="No-Timer">No-Timer</option>
                       {/* <option value="React">React</option>

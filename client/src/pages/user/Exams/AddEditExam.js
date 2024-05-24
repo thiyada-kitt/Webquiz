@@ -15,7 +15,7 @@ import { Tabs } from "antd";
 import AddEditQuestion from "./AddEditQuestion";
 import AddQuestion from "./AddQuestion"
 import { getUserInfo } from "../../../apicalls/users";
-import { addMultiQuestion, getDraftQuestion } from "../../../apicalls/exams";
+import { addMultiQuestion, getDraftQuestion, validateExamUser } from "../../../apicalls/exams";
 const { TabPane } = Tabs;
 
 
@@ -190,11 +190,31 @@ const onTabClick = (activeKey) => {
   }
 }
 
+const validate = async () => {
+  try {
+      dispatch(ShowLoading());
+      const response = await validateExamUser({
+        examID: params.id
+      })
+      dispatch(HideLoading());
+      if (response.success){
+        console.log(response)
+      }
+      else{
+        message.error("You are unauthorized to this exams.")
+        navigate("/user/exams")
+      }
+  } catch (error) {
+    message.error("Unsuccessfully fetching data")
+    navigate("/user/exams")
+  }
+}
+
   useEffect(() => {
     
     getUserData();
     getExamData();
-
+    validate();
   }, []);
 
   
@@ -223,7 +243,7 @@ const onTabClick = (activeKey) => {
                 <Col span={8}>
                   <Form.Item label="Mode" name="category">
                     <select name="" id="">
-                      <option value="" hidden>Select Category</option>
+                      <option value="" hidden>Select Mode</option>
                       <option value="Competitive">Competitive</option>
                       <option value="No-Timer">No-Timer</option>
                       {/* <option value="React">React</option>

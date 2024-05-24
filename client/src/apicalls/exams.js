@@ -145,3 +145,16 @@ export const getDraftQuestion = async (payload) => {
     return error.response.data
   }
 }
+
+export const validateExamUser = async (payload) => {
+  try{
+    const response = await axiosInstance.post(
+      "/api/exams/validate",
+      payload
+    )
+    return response.data;
+  }
+  catch (error) {
+    return error.response.data
+  }
+}

@@ -255,4 +255,28 @@ router.post("/get-draft-question", authMiddleware, async (req, res) => {
   }
 })
 
+router.post("/validate", authMiddleware, async (req, res) => {
+  try {
+    
+    const response = await Exam.findById(req.body.examID)
+    if (response.user == req.body.userId){
+      res.send({
+      message: "Fetch successfully",
+      data: response,
+      success: true,
+      });
+    }
+    else{
+      throw new error;
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+})
+
 module.exports = router;

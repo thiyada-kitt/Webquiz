@@ -66,6 +66,17 @@
   border-radius: 50%;
 }
 
+.timer-no-timer{
+  background-color: #adeaf5;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
 @keyframes loader {
   0% {
     transform: rotate(0deg);

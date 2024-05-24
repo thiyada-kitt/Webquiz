@@ -31,7 +31,9 @@ function WriteExam() {
       if (response.success) {
         setQuestions(response.data.questions);
         setExamData(response.data);
+        setMode(response.data.category)
         setSecondsLeft(response.data.duration);
+        
       } else {
         message.error(response.message);
       }
@@ -40,8 +42,8 @@ function WriteExam() {
       message.error(error.message);
     }
   };
-
-    const [timeUsed, setTimeUsed] = React.useState(0);
+  const [mode, setMode] = React.useState("")
+  const [timeUsed, setTimeUsed] = React.useState(0);
   const calculateResult = async () => {
     try {
       let correctAnswers = [];
@@ -92,12 +94,20 @@ function WriteExam() {
   const startTimer = () => {
     let totalSeconds = examData.duration;
     const intervalId = setInterval(() => {
-      if (totalSeconds > 0) {
-        totalSeconds = totalSeconds - 1;
+      if (mode !== "No-Timer")
+        {
+          if (totalSeconds > 0) {
+            totalSeconds = totalSeconds - 1;
+            setTimeUsed((time) => time += 1);
+            setSecondsLeft(totalSeconds);
+          } else {
+            setTimeUp(true);
+          }
+        }
+      else if (mode === "No-Timer"){
+        totalSeconds = totalSeconds + 1;
         setTimeUsed((time) => time += 1);
-        setSecondsLeft(totalSeconds);
-      } else {
-        setTimeUp(true);
+        setSecondsLeft(totalSeconds); // If no-timer mode, keep incrementing
       }
     }, 1000);
     setIntervalId(intervalId);
@@ -105,9 +115,11 @@ function WriteExam() {
 
   useEffect(() => {
     if (timeUp && view === "questions") {
+      if (mode !== "No-Timer"){
+        setTimeUp(true);
+      }
       clearInterval(intervalId);
       calculateResult();
-      setTimeUp(true);
     }
   }, [timeUp]);
 
@@ -139,9 +151,16 @@ function WriteExam() {
                 {questions[selectedQuestionIndex].name}
               </h1>
 
+            { mode !== "No-Timer" ?
               <div className="timer">
-                <span className="text-2xl">{secondsLeft}</span>
+                <span className="text-2xl">{("0" + Math.floor(secondsLeft/60)).slice(-2)}:{("0" + secondsLeft%60).slice(-2)}</span>
               </div>
+              :
+              <div className="timer-no-timer">
+                <span className="text-2xl">{("0" + Math.floor(timeUsed/60)).slice(-2)}:{("0" + timeUsed%60).slice(-2)}</span>
+              </div>
+            }
+              
             </div>
 
             <div className="flex flex-col gap-2">
@@ -320,6 +339,7 @@ function WriteExam() {
                   setSelectedQuestionIndex(0);
                   setSelectedOptions({});
                   setSecondsLeft(examData.duration);
+                  setTimeUsed(0)
                 }}
               >
                 Retake Exam
