@@ -6,6 +6,7 @@ import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import { getAllExams } from "../apicalls/exams";
 import { getLeaderboards } from "../apicalls/reports";
 import { useEffect } from "react";
+import "../stylesheets/custom-components.css";
 
 function App() {
   const [quiz, setQuiz] = React.useState([]);
@@ -34,12 +35,19 @@ function App() {
     {
       title: "Duration",
       dataIndex: "timeUsed",
-      render: (text, record) => (
-        <>
-          {("0" + Math.floor(record.result.timeUsed / 60)).slice(-2)}:
-          {("0" + (record.result.timeUsed % 60)).slice(-2)}
-        </>
-      ),
+      render: (text, record) => {
+        if (record.exam.duration === null) {
+          return "-";
+        }
+        const timeUsed = record.result.timeUsed;
+        const minutes = ("0" + Math.floor(timeUsed / 60)).slice(-2);
+        const seconds = ("0" + (timeUsed % 60)).slice(-2);
+        return (
+          <>
+            {minutes}:{seconds}
+          </>
+        );
+      },
     },
   ];
 

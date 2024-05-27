@@ -189,7 +189,6 @@ function AddEditExam() {
   const onTabClick = (activeKey) => {
     if (activeKey === "2"){
       getExamData();
-      console.log(activeKey)
     }
   }
   
@@ -216,7 +215,7 @@ function AddEditExam() {
                 <Col span={8}>
                   <Form.Item label="Category" name="category">
                     <select name="" id="">
-                      <option value="">Select Category</option>
+                      <option selected hidden>Select Category</option>
                       <option value="Knowledge">Knowledge</option>
                       <option value="Entertainment">Entertainment</option>
                       <option value="Game">Game</option>
@@ -226,7 +225,7 @@ function AddEditExam() {
                 <Col span={8}>
                   <Form.Item label="Mode" name="mode">
                     <select name="" id="">
-                      <option value="">Select Mode</option>
+                      <option selected hidden>Select Mode</option>
                       <option value="NoTimer">NoTimer</option>
                       <option value="Timer">Timer</option>
                     </select>

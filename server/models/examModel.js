@@ -13,6 +13,10 @@ const examSchema = new mongoose.Schema(
     },
     duration: {
       type: Number,
+      default: null, 
+    },
+    mode: {
+      type: String,
       required: true,
     },
     category: {

@@ -26,13 +26,6 @@ function AdminReports() {
       render: (text, record) => <>{record.user.name}</>,
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      render: (text, record) => (
-        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
-      ),
-    },
-    {
       title: "Total Marks",
       dataIndex: "totalQuestions",
       render: (text, record) => <>{record.exam.totalMarks}</>,
@@ -47,15 +40,22 @@ function AdminReports() {
       dataIndex: "correctAnswers",
       render: (text, record) => <>{record.result.correctAnswers.length}</>,
     },
-    {
-      title: "Total time",
-      dataIndex: "timeUsed",
-      render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
-    },
+    // {
+    //   title: "Total time",
+    //   dataIndex: "timeUsed",
+    //   render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
+    // },
     {
       title: "Verdict",
       dataIndex: "verdict",
       render: (text, record) => <>{record.result.verdict}</>,
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: (text, record) => (
+        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
+      ),
     },
   ];
 

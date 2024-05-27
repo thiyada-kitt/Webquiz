@@ -20,22 +20,22 @@ function ProtectedRoute({ children }) {
       icon: <i className="ri-home-line"></i>,
       onClick: () => navigate("/"),
     },
-    {
-      title: "Timed mode",
-      paths: [],
-      icon: <i className="ri-timer-line"></i>,
-      onClick: () => navigate(""),
-    },
-    {
-      title: "Non-timed mode",
-      paths: [],
-      icon: <i className="ri-close-circle-line"></i>,
-      onClick: () => navigate(""),
-    },
+    // {
+    //   title: "Timed mode",
+    //   paths: ["user/timemode"],
+    //   icon: <i className="ri-timer-line"></i>,
+    //   onClick: () => navigate("/"),
+    // },
+    // {
+    //   title: "Non-timed mode",
+    //   paths: ["user/notimemode"],
+    //   icon: <i className="ri-close-circle-line"></i>,
+    //   onClick: () => navigate("/"),
+    // },
     {
       title: "Leaderboard",
       paths: ["/leaderboard"],
-      icon: <i className="ri-barricade-line"></i>,
+      icon: <i className="ri-medal-line"></i>,
       onClick: () => navigate("/leaderboard"),
     },
     {
@@ -75,10 +75,10 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/"),
     },
     {
-      title: "Exams",
-      paths: ["/admin/exams", "/admin/exams/add"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/admin/exams"),
+      title: "Leaderboard",
+      paths: ["/leaderboard"],
+      icon: <i className="ri-medal-line"></i>,
+      onClick: () => navigate("/leaderboard"),
     },
     {
       title: "Reports",
@@ -87,10 +87,10 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/admin/reports"),
     },
     {
-      title: "Leaderboard",
-      paths: ["/leaderboard"],
-      icon: <i className="ri-barricade-line"></i>,
-      onClick: () => navigate("/leaderboard"),
+      title: "Exams",
+      paths: ["/admin/exams", "/admin/exams/add"],
+      icon: <i className="ri-file-list-line"></i>,
+      onClick: () => navigate("/admin/exams"),
     },
     // {
     //   title: "Profile",

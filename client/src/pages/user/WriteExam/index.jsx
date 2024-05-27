@@ -8,19 +8,21 @@ import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import Instructions from "./Instructions";
 
 function WriteExam() {
-  const [examData, setExamData] = React.useState(null);
-  const [questions = [], setQuestions] = React.useState([]);
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = React.useState(0);
-  const [selectedOptions, setSelectedOptions] = React.useState({});
-  const [result = {}, setResult] = React.useState({});
+  const [examData, setExamData] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [result, setResult] = useState({});
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [view, setView] = useState("instructions");
-  const [secondsLeft = 0, setSecondsLeft] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const { user } = useSelector((state) => state.users);
+  const [timeUsed, setTimeUsed] = useState(0);
+
   const getExamData = async () => {
     try {
       dispatch(ShowLoading());
@@ -31,7 +33,7 @@ function WriteExam() {
       if (response.success) {
         setQuestions(response.data.questions);
         setExamData(response.data);
-        setSecondsLeft(response.data.duration);
+        setSecondsLeft(response.data.duration !== null ? response.data.duration : 0);
       } else {
         message.error(response.message);
       }
@@ -41,7 +43,6 @@ function WriteExam() {
     }
   };
 
-    const [timeUsed, setTimeUsed] = React.useState(0);
   const calculateResult = async () => {
     try {
       let correctAnswers = [];
@@ -50,7 +51,6 @@ function WriteExam() {
       questions.forEach((question, index) => {
         if (question.correctOption === selectedOptions[index]) {
           correctAnswers.push(question);
-          marks+=0;
         } else {
           wrongAnswers.push(question);
         }
@@ -89,15 +89,17 @@ function WriteExam() {
     }
   };
 
-  const startTimer = () => {
-    let totalSeconds = examData.duration;
+  const startTimer = (duration) => {
+    if (duration === null) return;
+    let totalSeconds = duration;
     const intervalId = setInterval(() => {
       if (totalSeconds > 0) {
-        totalSeconds = totalSeconds - 1;
-        setTimeUsed((time) => time += 1);
+        totalSeconds -= 1;
+        setTimeUsed((time) => time + 1);
         setSecondsLeft(totalSeconds);
       } else {
         setTimeUp(true);
+        clearInterval(intervalId);
       }
     }, 1000);
     setIntervalId(intervalId);
@@ -116,6 +118,11 @@ function WriteExam() {
       getExamData();
     }
   }, []);
+
+  const areAllQuestionsAnswered = () => {
+    return questions.length === Object.keys(selectedOptions).length;
+  };
+
   return (
     examData && (
       <div className="mt-2">
@@ -127,7 +134,7 @@ function WriteExam() {
           <Instructions
             examData={examData}
             setView={setView}
-            startTimer={startTimer}
+            startTimer={() => startTimer(examData.duration)}
           />
         )}
 
@@ -139,9 +146,14 @@ function WriteExam() {
                 {questions[selectedQuestionIndex].name}
               </h1>
 
-              <div className="timer">
-                <span className="text-2xl">{secondsLeft}</span>
-              </div>
+              {examData.duration !== null && (
+                <div className="timer">
+                  <span className="text-2xl">
+                    {("0" + Math.floor(secondsLeft / 60)).slice(-2)}:
+                    {("0" + (secondsLeft % 60)).slice(-2)}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -199,8 +211,12 @@ function WriteExam() {
                 <button
                   className="primary-contained-btn"
                   onClick={() => {
-                    clearInterval(intervalId);
-                    setTimeUp(true);
+                    if (areAllQuestionsAnswered()) {
+                      clearInterval(intervalId);
+                      setTimeUp(true);
+                    } else {
+                      message.error("Please answer all questions before submitting.");
+                    }
                   }}
                 >
                   Submit
@@ -235,7 +251,7 @@ function WriteExam() {
                       setView("instructions");
                       setSelectedQuestionIndex(0);
                       setSelectedOptions({});
-                      setSecondsLeft(examData.duration);
+                      setSecondsLeft(examData.duration !== null ? examData.duration : 0);
                       setTimeUp(false); // Fix retake exams not working properly
                     }}
                   >
@@ -288,6 +304,7 @@ function WriteExam() {
                     isCorrect ? "bg-success" : "bg-error"
                   }
                 `}
+                  key={index}
                 >
                   <h1 className="text-xl">
                     {index + 1} : {question.name}
@@ -319,7 +336,7 @@ function WriteExam() {
                   setView("instructions");
                   setSelectedQuestionIndex(0);
                   setSelectedOptions({});
-                  setSecondsLeft(examData.duration);
+                  setSecondsLeft(examData.duration !== null ? examData.duration : 0);
                 }}
               >
                 Retake Exam

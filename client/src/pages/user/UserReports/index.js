@@ -21,13 +21,6 @@ function UserReports() {
       render: (text, record) => <>{record.exam.name}</>,
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      render: (text, record) => (
-        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
-      ),
-    },
-    {
       title: "Total Marks",
       dataIndex: "totalQuestions",
       render: (text, record) => <>{record.exam.totalMarks}</>,
@@ -48,15 +41,17 @@ function UserReports() {
       render: (text, record) => <>{record.result.verdict}</>,
     },
     {
-      title: "Total time",
-      dataIndex: "timeUsed",
-      render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
-    },
-    {
-      title: "Total time",
-      dataIndex: "timeUsed",
-      render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
+      title: "Date",
+      dataIndex: "date",
+      render: (text, record) => (
+        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
+      ),
     }
+    // {
+    //   title: "Total time",
+    //   dataIndex: "timeUsed",
+    //   render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
+    // }
   ];
 
   const getData = async () => {

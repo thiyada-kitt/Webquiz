@@ -24,6 +24,8 @@ function AddEditExam() {
     React.useState(false);
   const [selectedQuestion, setSelectedQuestion] = React.useState(null);
   const params = useParams();
+  const [form] = Form.useForm();
+  
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
@@ -35,9 +37,11 @@ function AddEditExam() {
           examId: params.id,
         });
       } else {
-        // response = await addExam(values);
-        response = await addExam({...values,
-          user: user
+        let durationValue = form.getFieldValue('mode') === 'Notimer' ? null : values.duration;
+        response = await addExam({
+          ...values,
+          user: user,
+          duration: durationValue
         });
       }
       if (response.success) {
@@ -173,7 +177,7 @@ function AddEditExam() {
       <div className="divider"></div>
 
       {(examData || !params.id) && (
-        <Form layout="vertical" onFinish={onFinish} initialValues={examData}>
+        <Form layout="vertical" form={form} onFinish={onFinish} initialValues={examData}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Exam Details" key="1">
               <Row gutter={[10, 10]}>
@@ -185,7 +189,7 @@ function AddEditExam() {
                 <Col span={8}>
                   <Form.Item label="Category" name="category">
                     <select name="" id="">
-                      <option value="">Select Category</option>
+                      <option selected hidden>Select Category</option>
                       <option value="Knowledge">Knowledge</option>
                       <option value="Entertainment">Entertainment</option>
                       <option value="Game">Game</option>
@@ -195,15 +199,17 @@ function AddEditExam() {
                 <Col span={8}>
                   <Form.Item label="Mode" name="mode">
                     <select name="" id="">
-                      <option value="">Select Mode</option>
-                      <option value="NoTimer">NoTimer</option>
+                      <option selected hidden>Select Mode</option>
+                      <option value="Notimer">NoTimer</option>
                       <option value="Timer">Timer</option>
                     </select>
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Exam Duration" name="duration">
-                    <input type="number" />
+                  <Form.Item
+                    label="Exam Duration"
+                    name="duration">
+                      <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>

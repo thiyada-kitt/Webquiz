@@ -132,12 +132,10 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
 
 router.post("/update-user-info", authMiddleware, async(req, res) => {
   try{ // Brute force updates, createdAt attributes in user model
-    console.log(req.body.password)
     if (req.body.createdAt === true){ // Password changes, update username and password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       req.body.password= hashedPassword;
-      console.log(req.body.password)
       await User.findByIdAndUpdate(req.body._id, {name: req.body.name, password: req.body.password});
       if (req.body.isAdmin === true){
         await Admin.findOneAndUpdate({email: req.body.email}, {name: req.body.name, password: req.body.password});

@@ -50,7 +50,6 @@ function AddEditQuestion({
         tempUser: user,
       };
 
-      console.log(requiredPayload)
       let response;
         if(selectedQuestion){
             response = await editQuestionById({
