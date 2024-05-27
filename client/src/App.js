@@ -13,6 +13,7 @@ import Home from "./pages/common/Home";
 // import Exams from "./pages/admin/Exams";
 import Exams from "./pages/user/Exams";
 import AdminExams from "./pages/admin/Exams";
+import UserAddEditExam from "./pages/user/Exams/AddEditExam";
 import AddEditExam from "./pages/admin/Exams/AddEditExam";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
@@ -72,7 +73,7 @@ function App() {
             path="/user/exams/add"
             element={
               <ProtectedRoute>
-                <AddEditExam />
+                <UserAddEditExam />
               </ProtectedRoute>
             }
           />
@@ -80,7 +81,7 @@ function App() {
             path="/user/exams/edit/:id"
             element={
               <ProtectedRoute>
-                <AddEditExam />
+                <UserAddEditExam />
               </ProtectedRoute>
             }
           />

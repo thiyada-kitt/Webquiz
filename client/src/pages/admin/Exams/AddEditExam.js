@@ -13,13 +13,15 @@ import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { Tabs } from "antd";
 import AddEditQuestion from "./AddEditQuestion";
+import AddQuestion from "./AddQuestion"
 import { getUserInfo } from "../../../apicalls/users";
+import { addMultiQuestion, getDraftQuestion } from "../../../apicalls/exams";
 const { TabPane } = Tabs;
 
 function AddEditExam() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [examData, setExamData] = React.useState(null);
+  const [examData, setExamData] = React.useState(null); // ต้องทำกรณีเพิ่มข้อมูล Draft
   const [showAddEditQuestionModal, setShowAddEditQuestionModal] =
     React.useState(false);
   const [selectedQuestion, setSelectedQuestion] = React.useState(null);
@@ -28,6 +30,7 @@ function AddEditExam() {
     try {
       dispatch(ShowLoading());
       let response;
+      let response2;
 
       if (params.id) {
         response = await editExamById({
@@ -35,17 +38,26 @@ function AddEditExam() {
           examId: params.id,
 
         });
+        if (response.success) {
+          message.success(response.message);
+          navigate("/admin/exams");
+        } else {
+          message.error(response.message);
+        }
       } else {
         // response = await addExam(values);
         response = await addExam({...values,
           user: user
         });
-      }
-      if (response.success) {
-        message.success(response.message);
-        navigate("/admin/exams");
-      } else {
-        message.error(response.message);
+        response2 = await addMultiQuestion({
+          user: user
+        })
+        if (response.success && response2.success) {
+          message.success(response.message);
+          navigate("/admin/exams");
+        } else {
+          message.error(response.message);
+        }
       }
       dispatch(HideLoading());
     } catch (error) {
@@ -56,8 +68,10 @@ function AddEditExam() {
 
   const getExamData = async () => {
     try {
-      dispatch(ShowLoading());
-      const response = await getExamById({
+      let response;
+      dispatch(ShowLoading()); // Will continue this one
+      if (params.id){
+        response = await getExamById({
         examId: params.id,
       });
       dispatch(HideLoading());
@@ -65,6 +79,17 @@ function AddEditExam() {
         setExamData(response.data);
       } else {
         message.error(response.message);
+      }}
+    else if (user){
+      response = await getDraftQuestion({
+        user: user,
+      })
+      dispatch(HideLoading());
+      if (response.success) {
+        setExamData(response.data);
+      } else {
+        message.error(response.message);
+      }
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -72,11 +97,7 @@ function AddEditExam() {
     }
   };
 
-  useEffect(() => {
-    if (params.id) {
-      getExamData();
-    }
-  }, []);
+
 
   const deleteQuestion = async (questionId) => {
     try {
@@ -164,10 +185,19 @@ function AddEditExam() {
   };
   const [user, setUser] = React.useState(null) // Mark creator for an exam
 
-    useEffect(() => {
-        getUserData();
-    }, []);
 
+  const onTabClick = (activeKey) => {
+    if (activeKey === "2"){
+      getExamData();
+      console.log(activeKey)
+    }
+  }
+  
+    useEffect(() => {
+  
+      getUserData();
+      getExamData();
+    }, []);
   return (
     <div>
       <PageTitle title={params.id ? "Edit Exam" : "Add Exam"} />
@@ -175,7 +205,7 @@ function AddEditExam() {
 
       {(examData || !params.id) && (
         <Form layout="vertical" onFinish={onFinish} initialValues={examData}>
-          <Tabs defaultActiveKey="1">
+          <Tabs defaultActiveKey="1" onTabClick={onTabClick}>
             <TabPane tab="Exam Details" key="1">
               <Row gutter={[10, 10]}>
                 <Col span={8}>
@@ -184,23 +214,27 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Exam Duration" name="duration">
-                    <input type="number" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
                   <Form.Item label="Category" name="category">
                     <select name="" id="">
                       <option value="">Select Category</option>
-                      <option value="Javascript">Javascript</option>
-                      <option value="React">React</option>
-                      <option value="Node">Node</option>
-                      <option value="MongoDB">MongoDB</option>
-                      <option value="GK">GK</option>
-                      <option value="ML">Machine Learning</option>
-                      <option value="ebusiness">E-business</option>
-
+                      <option value="Knowledge">Knowledge</option>
+                      <option value="Entertainment">Entertainment</option>
+                      <option value="Game">Game</option>
                     </select>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="Mode" name="mode">
+                    <select name="" id="">
+                      <option value="">Select Mode</option>
+                      <option value="NoTimer">NoTimer</option>
+                      <option value="Timer">Timer</option>
+                    </select>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="Exam Duration" name="duration">
+                    <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -227,8 +261,7 @@ function AddEditExam() {
                 </button>
               </div>
             </TabPane>
-            {params.id && (
-              <TabPane tab="Questions" key="2">
+             <TabPane tab={params.id ? "Questions" : "Questions (Draft)"} key="2">
                 <div className="flex justify-end">
                   <button
                     className="primary-outlined-btn"
@@ -241,15 +274,14 @@ function AddEditExam() {
 
                 <Table
                   columns={questionsColumns}
-                  dataSource={examData?.questions || []}
+                  dataSource={examData?.questions || examData}
                 />
-              </TabPane>
-            )}
+            </TabPane>
           </Tabs>
         </Form>
       )}
 
-      {showAddEditQuestionModal && (
+      {showAddEditQuestionModal && params.id ? 
         <AddEditQuestion
           setShowAddEditQuestionModal={setShowAddEditQuestionModal}
           showAddEditQuestionModal={showAddEditQuestionModal}
@@ -258,7 +290,15 @@ function AddEditExam() {
           selectedQuestion={selectedQuestion}
           setSelectedQuestion={setSelectedQuestion}
         />
-      )}
+        : showAddEditQuestionModal &&
+        <AddQuestion
+          setShowAddEditQuestionModal={setShowAddEditQuestionModal}
+          showAddEditQuestionModal={showAddEditQuestionModal}
+          refreshData={getExamData}
+          selectedQuestion={selectedQuestion}
+          setSelectedQuestion={setSelectedQuestion}
+        />
+      }
     </div>
   );
 }

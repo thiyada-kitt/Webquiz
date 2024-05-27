@@ -107,3 +107,41 @@ export const deleteQuestionById = async (payload) => {
     return error.response.data;
   }
 }
+
+export const addPresetQuestion = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/exams/add-preset-question",
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const addMultiQuestion = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/exams/addmulti-question-in-exam",
+      payload
+    );
+    return response.data;
+  }
+  catch (error){
+    return error.response.data
+  }
+}
+
+export const getDraftQuestion = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/exams/get-draft-question",
+      payload
+    )
+    return response.data;
+  }
+  catch (error) {
+    return error.response.data
+  }
+}

@@ -18,12 +18,12 @@ function App() {
 
   const columns = [
     {
-      title: "username",
+      title: "Username",
       dataIndex: "userName",
       render: (text, record) => <>{record.user.name}</>,
     },
     {
-      title: "score",
+      title: "Score",
       dataIndex: "correctAnswers",
       render: (text, record) => (
         <>
@@ -32,7 +32,7 @@ function App() {
       ),
     },
     {
-      title: "duration",
+      title: "Duration",
       dataIndex: "timeUsed",
       render: (text, record) => (
         <>
@@ -94,7 +94,8 @@ function App() {
 
   return (
     <div>
-      <PageTitle title="leaderboard" />
+      <PageTitle title="Leaderboard" />
+      <div className="divider"></div>
       <div>
         <select onChange={updateSelect}>
           <option selected hidden>

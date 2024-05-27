@@ -21,10 +21,22 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/"),
     },
     {
-      title: "Exams",
-      paths: ["/user/exams", "/user/exams/add"],
-      icon: <i className="ri-file-list-line"></i>,
-      onClick: () => navigate("/user/exams"),
+      title: "Timed mode",
+      paths: [],
+      icon: <i className="ri-timer-line"></i>,
+      onClick: () => navigate(""),
+    },
+    {
+      title: "Non-timed mode",
+      paths: [],
+      icon: <i className="ri-close-circle-line"></i>,
+      onClick: () => navigate(""),
+    },
+    {
+      title: "Leaderboard",
+      paths: ["/leaderboard"],
+      icon: <i className="ri-barricade-line"></i>,
+      onClick: () => navigate("/leaderboard"),
     },
     {
       title: "Reports",
@@ -33,10 +45,10 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/user/reports"),
     },
     {
-      title: "Leaderboard",
-      paths: ["/leaderboard"],
-      icon: <i className="ri-barricade-line"></i>,
-      onClick: () => navigate("/leaderboard"),
+      title: "Exams",
+      paths: ["/user/exams", "/user/exams/add"],
+      icon: <i className="ri-file-list-line"></i>,
+      onClick: () => navigate("/user/exams"),
     },
     // {
     //   title: "Profile",
@@ -126,7 +138,7 @@ function ProtectedRoute({ children }) {
       navigate("/login");
     }
   }, []);
-
+  
   const activeRoute = window.location.pathname;
 
   const getIsActiveOrNot = (paths) => {
@@ -184,7 +196,7 @@ function ProtectedRoute({ children }) {
                 onClick={() => setCollapsed(false)}
               ></i>
             )}
-            <h1 className="text-2xl text-white">Quizuzz!</h1>
+            <h1 className="text-2xl text-white cursor-pointer" onClick={() => navigate("/")}>Quizuzz!</h1>
             <div onClick={() => navigate("/profile")} className="cursor-pointer">
               <div className="flex gap-1 items-center">
                 <h1 className="text-md text-white">{user?.name}</h1>

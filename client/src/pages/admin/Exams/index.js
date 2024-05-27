@@ -51,12 +51,16 @@ function Exams() {
       dataIndex: "name",
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
+      title: "Mode",
+      dataIndex: "mode",
     },
     {
       title: "Category",
       dataIndex: "category",
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
     },
     {
       title: "Total Marks",

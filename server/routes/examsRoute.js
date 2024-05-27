@@ -152,11 +152,13 @@ router.post("/delete-question-in-exam", authMiddleware, async (req, res) => {
         await Question.findByIdAndDelete(req.body.questionId);
 
         // delete question in exam
-        const exam = await Exam.findById(req.body.examId);
-        exam.questions = exam.questions.filter(
-          (question) => question._id != req.body.questionId
-        );
-        await exam.save();
+        if (req.body.examID){
+          const exam = await Exam.findById(req.body.examId);
+          exam.questions = exam.questions.filter(
+            (question) => question._id != req.body.questionId
+          );
+          await exam.save();
+        }
         res.send({
           message: "Question deleted successfully",
           success: true,
@@ -172,6 +174,74 @@ router.post("/fetch-exam-by-userid", authMiddleware, async (req, res) => {
     res.send({
       message: "Exams fetched successfully",
       data: exams,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+})
+router.post("/addmulti-question-in-exam", authMiddleware, async (req, res) => {
+  try {
+    const fetchExam = await Exam.find().limit(1).sort({$natural:-1});
+    const questions = await Question.updateMany({tempUser: req.body.user},
+      {
+        $set: {exam: fetchExam[0]._id},
+        $unset: {tempUser: req.body.user}
+    });
+    const fetchQuestion = await Question.find({
+      exam: fetchExam[0]._id
+    })
+    fetchQuestion.map((data) => {
+      fetchExam[0].questions.push(data._id);
+    })
+
+    await fetchExam[0].save()
+
+    res.send({
+      message: "New exam added successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+})
+
+
+router.post("/add-preset-question", authMiddleware, async (req, res) => {
+  try {
+    // add question to Questions collection
+    const newQuestion = new Question(req.body);
+    const question = await newQuestion.save();
+
+    res.send({
+      message: "Question added successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      data: error,
+      success: false,
+    });
+  }
+});
+
+router.post("/get-draft-question", authMiddleware, async (req, res) => {
+  try {
+    // get question drafted
+    const response = await Question.find({tempUser: req.body.user})
+
+    res.send({
+      message: "Question added successfully",
+      data: response,
       success: true,
     });
   } catch (error) {

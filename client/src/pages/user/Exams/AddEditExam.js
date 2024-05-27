@@ -183,23 +183,27 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Exam Duration" name="duration">
-                    <input type="number" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
                   <Form.Item label="Category" name="category">
                     <select name="" id="">
                       <option value="">Select Category</option>
-                      <option value="Javascript">Javascript</option>
-                      <option value="React">React</option>
-                      <option value="Node">Node</option>
-                      <option value="MongoDB">MongoDB</option>
-                      <option value="GK">GK</option>
-                      <option value="ML">Machine Learning</option>
-                      <option value="ebusiness">E-business</option>
-
+                      <option value="Knowledge">Knowledge</option>
+                      <option value="Entertainment">Entertainment</option>
+                      <option value="Game">Game</option>
                     </select>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="Mode" name="mode">
+                    <select name="" id="">
+                      <option value="">Select Mode</option>
+                      <option value="NoTimer">NoTimer</option>
+                      <option value="Timer">Timer</option>
+                    </select>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="Exam Duration" name="duration">
+                    <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
