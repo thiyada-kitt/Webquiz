@@ -37,11 +37,9 @@ function AddEditExam() {
           examId: params.id,
         });
       } else {
-        let durationValue = form.getFieldValue('mode') === 'Notimer' ? null : values.duration;
         response = await addExam({
           ...values,
           user: user,
-          duration: durationValue
         });
       }
       if (response.success) {
@@ -86,7 +84,7 @@ function AddEditExam() {
       dispatch(ShowLoading());
       const response = await deleteQuestionById({
         questionId,
-        examId : params.id
+        examId: params.id
       });
       dispatch(HideLoading());
       if (response.success) {
@@ -112,7 +110,7 @@ function AddEditExam() {
       render: (text, record) => {
         return Object.keys(record.options).map((key) => {
           return (
-            <div>
+            <div key={key}>
               {key} : {record.options[key]}
             </div>
           );
@@ -157,7 +155,7 @@ function AddEditExam() {
       const response = await getUserInfo();
       dispatch(HideLoading());
       if (response.success) {
-        setUser(response.data._id)
+        setUser(response.data._id);
       } else {
         message.error(response.message);
       }
@@ -165,12 +163,13 @@ function AddEditExam() {
       message.error(error.message);
     }
   };
-  const [user, setUser] = React.useState(null) // Mark creator for an exam
 
-    useEffect(() => {
-        getUserData();
-    }, []);
-    
+  const [user, setUser] = React.useState(null); // Mark creator for an exam
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <div>
       <PageTitle title={params.id ? "Edit Exam" : "Add Exam"} />
@@ -188,8 +187,8 @@ function AddEditExam() {
                 </Col>
                 <Col span={8}>
                   <Form.Item label="Category" name="category">
-                    <select name="" id="">
-                      <option selected hidden>Select Category</option>
+                    <select>
+                      <option value="" hidden>Select Category</option>
                       <option value="Knowledge">Knowledge</option>
                       <option value="Entertainment">Entertainment</option>
                       <option value="Game">Game</option>
@@ -197,10 +196,10 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Mode" name="mode">
-                    <select name="" id="">
-                      <option selected hidden>Select Mode</option>
-                      <option value="Notimer">NoTimer</option>
+                  <Form.Item label="Mode" name="mode" >
+                    <select onChange={(e) => form.setFieldsValue({ duration: e.target.value === 'NoTimer' ? null : form.getFieldValue('duration') })}>
+                      <option value="" hidden>Select Mode</option>
+                      <option value="NoTimer">NoTimer</option>
                       <option value="Timer">Timer</option>
                     </select>
                   </Form.Item>
@@ -208,8 +207,22 @@ function AddEditExam() {
                 <Col span={8}>
                   <Form.Item
                     label="Exam Duration"
-                    name="duration">
-                      <input type="number" />
+                    name="duration"
+                    rules={[
+                      {
+                        validator: (_, value) => {
+                          const mode = form.getFieldValue('mode');
+                          if (mode === 'Timer' && !value) {
+                            return Promise.reject('Please enter duration for timer mode');
+                          } else if (mode === 'NoTimer' && value) {
+                            return Promise.reject('Delete ur duration!');
+                          }
+                          return Promise.resolve();
+                        },
+                      },
+                    ]}
+                  >
+                    <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>

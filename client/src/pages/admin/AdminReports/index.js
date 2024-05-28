@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../../../components/PageTitle";
 import { message, Table } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getAllReports } from "../../../apicalls/reports";
-import { useEffect } from "react";
 import moment from "moment";
 
 function AdminReports() {
-  const [reportsData, setReportsData] = React.useState([]);
+  const [reportsData, setReportsData] = useState([]);
   const dispatch = useDispatch();
-  const [filters, setFilters] = React.useState({
+  const [filters, setFilters] = useState({
     examName: "",
     userName: "",
   });
+
   const columns = [
     {
       title: "Exam Name",
@@ -24,6 +24,13 @@ function AdminReports() {
       title: "User Name",
       dataIndex: "userName",
       render: (text, record) => <>{record.user.name}</>,
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: (text, record) => (
+        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
+      ),
     },
     {
       title: "Total Marks",
@@ -40,22 +47,20 @@ function AdminReports() {
       dataIndex: "correctAnswers",
       render: (text, record) => <>{record.result.correctAnswers.length}</>,
     },
-    // {
-    //   title: "Total time",
-    //   dataIndex: "timeUsed",
-    //   render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
-    // },
+    {
+      title: "Total time",
+      dataIndex: "timeUsed",
+      render: (text, record) => (
+        <>
+          {("0" + Math.floor(record.result.timeUsed / 60)).slice(-2)}:
+          {("0" + (record.result.timeUsed % 60)).slice(-2)}
+        </>
+      ),
+    },
     {
       title: "Verdict",
       dataIndex: "verdict",
       render: (text, record) => <>{record.result.verdict}</>,
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      render: (text, record) => (
-        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
-      ),
     },
   ];
 
@@ -75,6 +80,24 @@ function AdminReports() {
     }
   };
 
+  const handleClear = () => {
+    setFilters({
+      examName: "",
+      userName: "",
+    });
+    setReportsData([]);
+  };
+
+  const handleSearch = () => {
+    getData(filters);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     getData(filters);
   }, []);
@@ -89,29 +112,19 @@ function AdminReports() {
           placeholder="Exam"
           value={filters.examName}
           onChange={(e) => setFilters({ ...filters, examName: e.target.value })}
+          onKeyPress={handleKeyPress}
         />
         <input
           type="text"
           placeholder="User"
           value={filters.userName}
           onChange={(e) => setFilters({ ...filters, userName: e.target.value })}
+          onKeyPress={handleKeyPress}
         />
-        <button
-          className="primary-outlined-btn"
-          onClick={() => {
-            setFilters({
-              examName: "",
-              userName: "",
-            });
-            getData({
-              examName: "",
-              userName: "",
-            });
-          }}
-        >
+        <button className="primary-outlined-btn" onClick={handleClear}>
           Clear
         </button>
-        <button className="primary-contained-btn" onClick={() => getData(filters)}>
+        <button className="primary-contained-btn" onClick={handleSearch}>
           Search
         </button>
       </div>

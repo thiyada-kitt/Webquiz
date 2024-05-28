@@ -1,25 +1,26 @@
 import { message, Table } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteExamById, getAllExams, fetchExambyUserID } from "../../../apicalls/exams";
+import { deleteExamById, fetchExambyUserID } from "../../../apicalls/exams";
 import PageTitle from "../../../components/PageTitle";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getUserInfo } from "../../../apicalls/users";
 
 function Exams() {
   const navigate = useNavigate();
-  const [exams, setExams] = React.useState([]);
-  const [userID, setUserID] = React.useState(null);
+  const [exams, setExams] = useState([]);
+  const [userID, setUserID] = useState(null);
   const dispatch = useDispatch();
 
   const getUserID = async () => {
     try {
       dispatch(ShowLoading());
       const response = await getUserInfo();
-      dispatch(HideLoading())
-      if (response.success){
-        setUserID(response.data._id)
+      dispatch(HideLoading());
+      if (response.success) {
+        setUserID(response.data._id);
+        getExamsData(response.data._id);  // Fetch exams data after getting user ID
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -52,6 +53,7 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
+        getExamsData(userID);  // Refresh exams data after deletion
       } else {
         message.error(response.message);
       }
@@ -60,6 +62,7 @@ function Exams() {
       message.error(error.message);
     }
   };
+
   const columns = [
     {
       title: "Exam Name",
@@ -76,6 +79,7 @@ function Exams() {
     {
       title: "Duration",
       dataIndex: "duration",
+      render: (text) => (text === null ? "-" : text),
     },
     {
       title: "Total Marks",
@@ -102,17 +106,15 @@ function Exams() {
       ),
     },
   ];
+
   useEffect(() => {
-    // getExamsData();
     getUserID();
-    getExamsData(userID);
   }, []);
 
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
         <PageTitle title="Exams" />
-
         <button
           className="primary-outlined-btn flex items-center"
           onClick={() => navigate("/user/exams/add")}
@@ -122,7 +124,6 @@ function Exams() {
         </button>
       </div>
       <div className="divider"></div>
-
       <Table columns={columns} dataSource={exams} />
     </div>
   );

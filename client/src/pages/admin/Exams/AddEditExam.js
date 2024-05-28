@@ -1,42 +1,34 @@
-import { Col, Form, message, Row, Select, Table } from "antd";
+import { Col, Form, message, Row, Select, Table, Tabs } from "antd";
 import React, { useEffect } from "react";
-import {
-  addExam,
-  deleteQuestionById,
-  editExamById,
-  getExamById,
-} from "../../../apicalls/exams";
+import { addExam, deleteQuestionById, editExamById, getExamById, getDraftQuestion, addMultiQuestion } from "../../../apicalls/exams";
 import PageTitle from "../../../components/PageTitle";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
-import { Tabs } from "antd";
 import AddEditQuestion from "./AddEditQuestion";
-import AddQuestion from "./AddQuestion"
+import AddQuestion from "./AddQuestion";
 import { getUserInfo } from "../../../apicalls/users";
-import { addMultiQuestion, getDraftQuestion } from "../../../apicalls/exams";
+
 const { TabPane } = Tabs;
 
 function AddEditExam() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [examData, setExamData] = React.useState(null); // ต้องทำกรณีเพิ่มข้อมูล Draft
-  const [showAddEditQuestionModal, setShowAddEditQuestionModal] =
-    React.useState(false);
+  const [examData, setExamData] = React.useState(null);
+  const [showAddEditQuestionModal, setShowAddEditQuestionModal] = React.useState(false);
   const [selectedQuestion, setSelectedQuestion] = React.useState(null);
   const params = useParams();
+  const [form] = Form.useForm();
+
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
       let response;
-      let response2;
 
       if (params.id) {
         response = await editExamById({
           ...values,
           examId: params.id,
-
         });
         if (response.success) {
           message.success(response.message);
@@ -45,13 +37,13 @@ function AddEditExam() {
           message.error(response.message);
         }
       } else {
-        // response = await addExam(values);
-        response = await addExam({...values,
-          user: user
+        const response = await addExam({
+          ...values,
+          user: user,
         });
-        response2 = await addMultiQuestion({
-          user: user
-        })
+        const response2 = await addMultiQuestion({
+          user: user,
+        });
         if (response.success && response2.success) {
           message.success(response.message);
           navigate("/admin/exams");
@@ -68,28 +60,18 @@ function AddEditExam() {
 
   const getExamData = async () => {
     try {
+      dispatch(ShowLoading());
       let response;
-      dispatch(ShowLoading()); // Will continue this one
-      if (params.id){
-        response = await getExamById({
-        examId: params.id,
-      });
-      dispatch(HideLoading());
-      if (response.success) {
-        setExamData(response.data);
-      } else {
-        message.error(response.message);
-      }}
-    else if (user){
-      response = await getDraftQuestion({
-        user: user,
-      })
-      dispatch(HideLoading());
-      if (response.success) {
-        setExamData(response.data);
-      } else {
-        message.error(response.message);
+      if (params.id) {
+        response = await getExamById({ examId: params.id });
+      } else if (user) {
+        response = await getDraftQuestion({ user: user });
       }
+      dispatch(HideLoading());
+      if (response.success) {
+        setExamData(response.data);
+      } else {
+        message.error(response.message);
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -97,14 +79,12 @@ function AddEditExam() {
     }
   };
 
-
-
   const deleteQuestion = async (questionId) => {
     try {
       dispatch(ShowLoading());
       const response = await deleteQuestionById({
         questionId,
-        examId : params.id
+        examId: params.id
       });
       dispatch(HideLoading());
       if (response.success) {
@@ -128,22 +108,18 @@ function AddEditExam() {
       title: "Options",
       dataIndex: "options",
       render: (text, record) => {
-        return Object.keys(record.options).map((key) => {
-          return (
-            <div>
-              {key} : {record.options[key]}
-            </div>
-          );
-        });
+        return Object.keys(record.options).map((key) => (
+          <div key={key}>
+            {key} : {record.options[key]}
+          </div>
+        ));
       },
     },
     {
       title: "Correct Option",
       dataIndex: "correctOption",
       render: (text, record) => {
-        return ` ${record.correctOption} : ${
-          record.options[record.correctOption]
-        }`;
+        return `${record.correctOption} : ${record.options[record.correctOption]}`;
       },
     },
     {
@@ -175,7 +151,7 @@ function AddEditExam() {
       const response = await getUserInfo();
       dispatch(HideLoading());
       if (response.success) {
-        setUser(response.data._id)
+        setUser(response.data._id);
       } else {
         message.error(response.message);
       }
@@ -183,39 +159,52 @@ function AddEditExam() {
       message.error(error.message);
     }
   };
-  const [user, setUser] = React.useState(null) // Mark creator for an exam
 
+  const [user, setUser] = React.useState(null);
 
-  const onTabClick = (activeKey) => {
-    if (activeKey === "2"){
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
       getExamData();
     }
-  }
-  
-    useEffect(() => {
-  
-      getUserData();
+  }, [user, params.id]);
+
+  const onTabClick = (activeKey) => {
+    if (activeKey === "2") {
       getExamData();
-    }, []);
+    }
+  };
+
   return (
     <div>
       <PageTitle title={params.id ? "Edit Exam" : "Add Exam"} />
       <div className="divider"></div>
 
       {(examData || !params.id) && (
-        <Form layout="vertical" onFinish={onFinish} initialValues={examData}>
+        <Form layout="vertical" form={form} onFinish={onFinish} initialValues={examData}>
           <Tabs defaultActiveKey="1" onTabClick={onTabClick}>
             <TabPane tab="Exam Details" key="1">
               <Row gutter={[10, 10]}>
                 <Col span={8}>
-                  <Form.Item label="Exam Name" name="name">
+                  <Form.Item
+                    label="Exam Name"
+                    name="name"
+                    rules={[{ required: true, message: 'Please enter exam name' }]}
+                  >
                     <input type="text" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Category" name="category">
-                    <select name="" id="">
-                      <option selected hidden>Select Category</option>
+                  <Form.Item
+                    label="Category"
+                    name="category"
+                    rules={[{ required: true, message: 'Please select category' }]}
+                  >
+                    <select>
+                      <option value="" hidden>Select Category</option>
                       <option value="Knowledge">Knowledge</option>
                       <option value="Entertainment">Entertainment</option>
                       <option value="Game">Game</option>
@@ -223,26 +212,54 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Mode" name="mode">
-                    <select name="" id="">
-                      <option selected hidden>Select Mode</option>
+                  <Form.Item
+                    label="Mode"
+                    name="mode"
+                    rules={[{ required: true, message: 'Please select mode' }]}
+                  >
+                    <select onChange={(e) => form.setFieldsValue({ duration: e.target.value === 'NoTimer' ? null : form.getFieldValue('duration') })}>
+                      <option value="" hidden>Select Mode</option>
                       <option value="NoTimer">NoTimer</option>
                       <option value="Timer">Timer</option>
                     </select>
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Exam Duration" name="duration">
+                  <Form.Item
+                    label="Exam Duration"
+                    name="duration"
+                    rules={[
+                      {
+                        validator: (_, value) => {
+                          const mode = form.getFieldValue('mode');
+                          if (mode === 'Timer' && !value) {
+                            return Promise.reject('Please enter duration for timer mode');
+                          } else if (mode === 'NoTimer' && value) {
+                            return Promise.reject('Delete ur duration!');
+                          }
+                          return Promise.resolve();
+                        },
+                      },
+                    ]}
+                  >
+                    <input type="number" disabled={form.getFieldValue('mode') === 'NoTimer'} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Total Marks"
+                    name="totalMarks"
+                    rules={[{ required: true, message: 'Please enter total marks' }]}
+                  >
                     <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Total Marks" name="totalMarks">
-                    <input type="number" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item label="Passing Marks" name="passingMarks">
+                  <Form.Item
+                    label="Passing Marks"
+                    name="passingMarks"
+                    rules={[{ required: true, message: 'Please enter passing marks' }]}
+                  >
                     <input type="number" />
                   </Form.Item>
                 </Col>
@@ -260,27 +277,27 @@ function AddEditExam() {
                 </button>
               </div>
             </TabPane>
-             <TabPane tab={params.id ? "Questions" : "Questions (Draft)"} key="2">
-                <div className="flex justify-end">
-                  <button
-                    className="primary-outlined-btn"
-                    type="button"
-                    onClick={() => setShowAddEditQuestionModal(true)}
-                  >
-                    Add Question
-                  </button>
-                </div>
+            <TabPane tab={params.id ? "Questions" : "Questions (Draft)"} key="2">
+              <div className="flex justify-end">
+                <button
+                  className="primary-outlined-btn"
+                  type="button"
+                  onClick={() => setShowAddEditQuestionModal(true)}
+                >
+                  Add Question
+                </button>
+              </div>
 
-                <Table
-                  columns={questionsColumns}
-                  dataSource={examData?.questions || examData}
-                />
+              <Table
+                columns={questionsColumns}
+                dataSource={examData?.questions || examData}
+              />
             </TabPane>
           </Tabs>
         </Form>
       )}
 
-      {showAddEditQuestionModal && params.id ? 
+      {showAddEditQuestionModal && params.id ? (
         <AddEditQuestion
           setShowAddEditQuestionModal={setShowAddEditQuestionModal}
           showAddEditQuestionModal={showAddEditQuestionModal}
@@ -289,15 +306,17 @@ function AddEditExam() {
           selectedQuestion={selectedQuestion}
           setSelectedQuestion={setSelectedQuestion}
         />
-        : showAddEditQuestionModal &&
-        <AddQuestion
-          setShowAddEditQuestionModal={setShowAddEditQuestionModal}
-          showAddEditQuestionModal={showAddEditQuestionModal}
-          refreshData={getExamData}
-          selectedQuestion={selectedQuestion}
-          setSelectedQuestion={setSelectedQuestion}
-        />
-      }
+      ) : (
+        showAddEditQuestionModal && (
+          <AddQuestion
+            setShowAddEditQuestionModal={setShowAddEditQuestionModal}
+            showAddEditQuestionModal={showAddEditQuestionModal}
+            refreshData={getExamData}
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
+          />
+        )
+      )}
     </div>
   );
 }

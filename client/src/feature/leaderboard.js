@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../components/PageTitle";
-import { message, Table } from "antd";
+import { message, Table, AutoComplete, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import { getAllExams } from "../apicalls/exams";
 import { getLeaderboards } from "../apicalls/reports";
-import { useEffect } from "react";
 import "../stylesheets/custom-components.css";
 
 function App() {
-  const [quiz, setQuiz] = React.useState([]);
-  const [filters, setFilters] = React.useState({
+  const [quiz, setQuiz] = useState([]);
+  const [filters, setFilters] = useState({
     examName: "ไม่โหลด",
     userName: "",
   });
-  const [setofResults, setSetofResults] = React.useState([]); 
+  const [setofResults, setSetofResults] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredExamNames, setFilteredExamNames] = useState([]);
   const dispatch = useDispatch();
 
   const columns = [
@@ -67,11 +68,28 @@ function App() {
     }
   };
 
-  const updateSelect = (evt) => {
-    setFilters({ ...filters, examName: evt.target.value });
-    getData({ ...filters, examName: evt.target.value });
+  const updateSelect = (value) => {
+    setFilters({ ...filters, examName: value });
+    getData({ ...filters, examName: value });
   };
 
+  const handleSearch = () => {
+    let examNameToSearch = searchInput.trim();
+    if (examNameToSearch === "" && filters.examName !== "ไม่โหลด") {
+      examNameToSearch = filters.examName;
+    }
+    getData({ examName: examNameToSearch, userName: filters.userName });
+  };
+
+  const handleClear = () => {
+    setFilters({
+      examName: "",
+      userName: "",
+    });
+    setSearchInput("");
+    setSetofResults([]); // Clear the results
+  };
+  
   const getData = async (filters) => {
     let userName = [];
     let information = [];
@@ -100,23 +118,56 @@ function App() {
     getExams();
   }, []);
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleSearchInputChange = (value) => {
+    setSearchInput(value);
+    filterExamNames(value);
+  };
+
+  const filterExamNames = (searchValue) => {
+    const filteredNames = quiz.filter((exam) =>
+      exam.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredExamNames(filteredNames);
+  };
+
+  const handleSelectExam = (exam) => {
+    setSearchInput(exam.name);
+    updateSelect(exam.name);
+  };
+
   return (
     <div>
       <PageTitle title="Leaderboard" />
       <div className="divider"></div>
-      <div>
-        <select onChange={updateSelect}>
-          <option selected hidden>
-            --- Search ---
-          </option>
-          {quiz.map((quiz) => (
-            <option key={quiz.name} value={quiz.name}>
-              {quiz.name}
-            </option>
-          ))}
-        </select>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <AutoComplete
+          style={{ width: 200, marginRight: 8, marginTop: 8 }}
+          options={filteredExamNames.map((exam) => ({
+            value: exam.name,
+            label: exam.name,
+          }))}
+          onSelect={(value) => updateSelect(value)}
+          onChange={(value) => handleSearchInputChange(value)}
+          placeholder="Exam name..."
+          value={searchInput}
+        />
+        <div>
+          <Button type="primary-outlined-btn" onClick={handleClear} style={{ marginTop: 8 }}>
+            Clear
+          </Button>
+          <Button type="primary-contained-btn" onClick={handleSearch} style={{ marginLeft: 8, marginTop: 8 }}>
+            Search
+          </Button>
+        </div>
       </div>
-      <div className="grid overflow-y-auto grid-flow-row">
+
+      <div className="grid overflow-y-auto grid-flow-row"  style={{ marginTop: 8 }}>
         <Table columns={columns} dataSource={setofResults} />
       </div>
     </div>
