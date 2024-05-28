@@ -20,6 +20,11 @@ function App() {
 
   const columns = [
     {
+      title: "Rank",
+      dataIndex: "rank",
+      render: (text, record) => <>{record.user.name}</>,
+    },
+    {
       title: "Username",
       dataIndex: "userName",
       render: (text, record) => <>{record.user.name}</>,

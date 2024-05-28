@@ -15,10 +15,27 @@ function ProtectedRoute({ children }) {
 
   const userMenu = [
     {
-      title: "Home",
+      title: "Play !",
       paths: ["/", "/user/write-exam"],
-      icon: <i className="ri-home-line"></i>,
       onClick: () => navigate("/"),
+      icon: <i className="ri-gamepad-line"></i>,
+      className: "play-menu-item", 
+      style: {
+        backgroundColor: "#10a810",
+        border: "1px solid white",
+        color: "while",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginbottom: "25",
+      },
+      hoverStyle: {
+        backgroundColor: "#10a810",
+        color: "white"
+      }
     },
     // {
     //   title: "Timed mode",
@@ -69,10 +86,26 @@ function ProtectedRoute({ children }) {
 
   const adminMenu = [
     {
-      title: "Home",
+      title: "Play !",
       paths: ["/", "/admin/write-exam"],
-      icon: <i className="ri-home-line"></i>,
       onClick: () => navigate("/"),
+      icon: <i className="ri-gamepad-line"></i>,
+      className: "play-menu-item", 
+      style: {
+        backgroundColor: "#10a810",
+        border: "1px solid white",
+        color: "while",
+        padding: "10px 20px",
+        borderRadius: "5px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      hoverStyle: {
+        backgroundColor: "#10a810",
+        color: "white"
+      }
     },
     {
       title: "Leaderboard",
@@ -169,11 +202,18 @@ function ProtectedRoute({ children }) {
             {menu.map((item, index) => {
               return (
                 <div
-                  className={`menu-item ${
-                    getIsActiveOrNot(item.paths) && "active-menu-item"
-                  }`}
+                  className={`menu-item ${getIsActiveOrNot(item.paths) && "active-menu-item"}`}
                   key={index}
                   onClick={item.onClick}
+                  style={item.style}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = item.hoverStyle.backgroundColor;
+                    e.target.style.color = item.hoverStyle.color;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = item.style.backgroundColor;
+                    e.target.style.color = item.style.color || "inherit";
+                  }}
                 >
                   {item.icon}
                   {!collapsed && <span>{item.title}</span>}
@@ -184,17 +224,10 @@ function ProtectedRoute({ children }) {
         </div>
         <div className="body">
           <div className="header flex justify-between">
-            {!collapsed && (
-              <i
-                className="ri-close-line"
-                onClick={() => setCollapsed(true)}
-              ></i>
-            )}
-            {collapsed && (
-              <i
-                className="ri-menu-line"
-                onClick={() => setCollapsed(false)}
-              ></i>
+            {!collapsed ? (
+              <i className="ri-close-line" onClick={() => setCollapsed(true)}></i>
+            ) : (
+              <i className="ri-menu-line" onClick={() => setCollapsed(false)}></i>
             )}
             <h1 className="text-2xl text-white cursor-pointer" onClick={() => navigate("/")}>Quizuzz!</h1>
             <div onClick={() => navigate("/profile")} className="cursor-pointer">
@@ -205,6 +238,9 @@ function ProtectedRoute({ children }) {
             </div>
           </div>
           <div className="content">{children}</div>
+          <div className="footer">
+            <p>Copyright 2024 © Quizuzz! <a href="https://discord.gg/KQUPYeSH" target="_blank" rel="noopener noreferrer" style={{ borderBottom: "1px solid black" }}>Contact us</a></p>
+          </div>
         </div>
       </div>
     </div>
