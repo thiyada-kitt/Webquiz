@@ -97,7 +97,7 @@ function App(){
                 </div>
                 <div className="flex flex-col my-2">
                   { !isChangePassword ?
-                    <button type="button" onClick={togglePasswordChange}>Password change</button>
+                    <button type="button" onClick={togglePasswordChange} style={{ width: '645px' }}>Password change</button>
                   :
                     <>
                       <label>Password</label>
