@@ -37,14 +37,13 @@ function AddEditExam() {
           examId: params.id,
         });
       } else {
-        response = await addExam({
-          ...values,
+        response = await addExam({...values,
           user: user,
         });
       }
       if (response.success) {
         message.success(response.message);
-        navigate("/admin/exams");
+        navigate("/user/exams");
       } else {
         message.error(response.message);
       }

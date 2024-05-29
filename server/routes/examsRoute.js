@@ -184,6 +184,7 @@ router.post("/fetch-exam-by-userid", authMiddleware, async (req, res) => {
     });
   }
 })
+
 router.post("/addmulti-question-in-exam", authMiddleware, async (req, res) => {
   try {
     const fetchExam = await Exam.find().limit(1).sort({$natural:-1});

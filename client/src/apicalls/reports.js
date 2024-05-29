@@ -13,12 +13,12 @@ export const addReport = async (payload) => {
 // get all reports
 export const getAllReports = async (filters) => {
     try {
-        const response = await axiosInstance.post("/api/reports/get-all-reports" , filters);
-        return response.data;
+      const response = await axiosInstance.post("/api/reports/get-all-reports" , filters); 
+      return response.data;
     } catch (error) {
-        return error.response.data;
+      return error.response.data;
     }
-}
+  }
 
 // get leaderboards reports
 export const getLeaderboards = async (filters) => {
