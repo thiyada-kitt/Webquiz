@@ -91,6 +91,7 @@ function Exams() {
     {
       title: "Duration",
       dataIndex: "duration",
+      render: (text) => (text === null ? "-" : text),
     },
     {
       title: "Total Marks",

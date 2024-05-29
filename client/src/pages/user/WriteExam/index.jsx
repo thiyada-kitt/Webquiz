@@ -173,6 +173,18 @@ function WriteExam() {
                           [selectedQuestionIndex]: option,
                         });
                       }}
+                      onDoubleClick={() => {
+                        if (selectedQuestionIndex < questions.length - 1) {
+                          setSelectedQuestionIndex(selectedQuestionIndex + 1);
+                        } else {
+                          if (areAllQuestionsAnswered()) {
+                            clearInterval(intervalId);
+                            setTimeUp(true);
+                          } else {
+                            message.error("Please answer all questions before submitting.");
+                          }
+                        }
+                      }}
                     >
                       <h1 className="text-xl">
                         {option} :{" "}

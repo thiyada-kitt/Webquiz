@@ -24,7 +24,7 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         setUserID(response.data._id);
-        getExamsData(response.data._id);  // Fetch exams data after getting user ID
+        // getExamsData(response.data._id);  // Fetch exams data after getting user ID
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -133,6 +133,7 @@ function Exams() {
 
   useEffect(() => {
     getUserID();
+    getExamsData(userID);
   }, []);
 
   return (

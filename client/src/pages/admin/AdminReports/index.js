@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import PageTitle from "../../../components/PageTitle";
-import { message, Table } from "antd";
+import { message, Table, Select, Row, Col } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getAllReports } from "../../../apicalls/reports";
 import moment from "moment";
 
+const { Option } = Select;
+
 function AdminReports() {
   const [reportsData, setReportsData] = useState([]);
   const dispatch = useDispatch();
-  const [filters, setFilters] = useState({
+  const initialFilters = {
     examName: "",
     userName: "",
-  });
+    verdict: "All",
+  };
+  const [filters, setFilters] = useState(initialFilters);
 
   const columns = [
     {
@@ -71,21 +75,12 @@ function AdminReports() {
   };
 
   const handleClear = () => {
-    setFilters({
-      examName: "",
-      userName: "",
-    });
-    setReportsData([]);
+    setFilters(initialFilters);
+    getData(initialFilters);
   };
 
   const handleSearch = () => {
     getData(filters);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
   };
 
   useEffect(() => {
@@ -100,12 +95,30 @@ function AdminReports() {
     const userNameMatch = report.user.name
       .toLowerCase()
       .includes(filters.userName.toLowerCase());
-    return examNameMatch && userNameMatch;
+    const verdictMatch =
+      filters.verdict === "All" ||
+      report.result.verdict.toLowerCase() === filters.verdict.toLowerCase();
+    return examNameMatch && userNameMatch && verdictMatch;
   });
 
   return (
     <div>
-      <PageTitle title="Reports" />
+      <Row justify="space-between" align="middle">
+        <Col>
+          <PageTitle title="Reports" />
+        </Col>
+        <Col>
+          <Select
+            value={filters.verdict}
+            style={{ width: 120 }}
+            onChange={(value) => setFilters({ ...filters, verdict: value })}
+          >
+            <Option value="All">All Verdicts</Option>
+            <Option value="pass">Pass</Option>
+            <Option value="fail">Fail</Option>
+          </Select>
+        </Col>
+      </Row>
       <div className="divider"></div>
       <div className="flex gap-2">
         <input
@@ -113,20 +126,15 @@ function AdminReports() {
           placeholder="Exam"
           value={filters.examName}
           onChange={(e) => setFilters({ ...filters, examName: e.target.value })}
-          onKeyPress={handleKeyPress}
         />
         <input
           type="text"
           placeholder="User"
           value={filters.userName}
           onChange={(e) => setFilters({ ...filters, userName: e.target.value })}
-          onKeyPress={handleKeyPress}
         />
         <button className="primary-outlined-btn" onClick={handleClear}>
           Clear
-        </button>
-        <button className="primary-contained-btn" onClick={handleSearch}>
-          Search
         </button>
       </div>
       <Table columns={columns} dataSource={filteredData} className="mt-2" />
