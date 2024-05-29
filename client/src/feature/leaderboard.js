@@ -6,6 +6,7 @@ import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import { getAllExams } from "../apicalls/exams";
 import { getLeaderboards } from "../apicalls/reports";
 import "../stylesheets/custom-components.css";
+import { RiMedalLine, RiMedal2Line, RiMedal3Line } from 'react-icons/ri';
 
 function App() {
   const [quiz, setQuiz] = useState([]);
@@ -17,20 +18,31 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [filteredExamNames, setFilteredExamNames] = useState([]);
   const dispatch = useDispatch();
-
+ 
   const columns = [
     {
-      title: "Rank",
+      title: <div style={{ textAlign: 'center' }}>Rank</div>,
       dataIndex: "rank",
-      render: (text, record) => <>{record.user.name}</>,
+      render: (text, record, index) => {
+        switch (index) {
+          case 0:
+            return <RiMedalLine style={{ color: 'gold' }} />;
+          case 1:
+            return <RiMedal2Line style={{ color: 'silver' }} />;
+          case 2:
+            return <RiMedal2Line style={{ color: 'bronze' }} />;
+          default:
+            return `#${index + 1}`;
+        }
+      },
     },
     {
-      title: "Username",
+      title:<div style={{ textAlign: 'center' }}>Username</div>, 
       dataIndex: "userName",
       render: (text, record) => <>{record.user.name}</>,
     },
     {
-      title: "Score",
+      title:<div style={{ textAlign: 'center' }}>Score,</div>, 
       dataIndex: "correctAnswers",
       render: (text, record) => (
         <>
@@ -39,7 +51,7 @@ function App() {
       ),
     },
     {
-      title: "Duration",
+      title: <div style={{ textAlign: 'center' }}>Duration</div>,
       dataIndex: "timeUsed",
       render: (text, record) => {
         if (record.exam.duration === null) {
