@@ -1,4 +1,4 @@
-import { message, Table } from "antd";
+import { message, Table, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +7,14 @@ import PageTitle from "../../../components/PageTitle";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getUserInfo } from "../../../apicalls/users";
 
+const { Option } = Select;
+
 function Exams() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [userID, setUserID] = useState(null);
+  const [modeFilter, setModeFilter] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState(null);
   const dispatch = useDispatch();
 
   const getUserID = async () => {
@@ -62,6 +66,26 @@ function Exams() {
       message.error(error.message);
     }
   };
+
+  const handleModeChange = (value) => {
+    setModeFilter(value);
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategoryFilter(value);
+  };
+
+  const filteredExams = exams.filter((exam) => {
+    if (modeFilter && modeFilter !== "All") {
+      return exam.mode === modeFilter;
+    }
+    return true;
+  }).filter((exam) => {
+    if (categoryFilter && categoryFilter !== "All") {
+      return exam.category === categoryFilter;
+    }
+    return true;
+  });
 
   const columns = [
     {
@@ -115,16 +139,29 @@ function Exams() {
     <div>
       <div className="flex justify-between mt-2 items-end">
         <PageTitle title="Exams" />
-        <button
-          className="primary-outlined-btn flex items-center"
-          onClick={() => navigate("/user/exams/add")}
-        >
-          <i className="ri-add-line"></i>
-          Add Exam
-        </button>
+        <div className="flex gap-2">
+          <Select defaultValue="All" onChange={handleModeChange}>
+            <Option value="All">All Mode</Option>
+            <Option value="Timer">Timer</Option>
+            <Option value="No Timer">No Timer</Option>
+          </Select>
+          <Select defaultValue="All" onChange={handleCategoryChange}>
+            <Option value="All">All Category</Option>
+            <Option value="Knowledge">Knowledge</Option>
+            <Option value="Entertainment">Entertainment</Option>
+            <Option value="Game">Game</Option>
+          </Select>
+          <button
+            className="primary-outlined-btn flex items-center"
+            onClick={() => navigate("/user/exams/add")}
+          >
+            <i className="ri-add-line"></i>
+            Add Exam
+          </button>
+        </div>
       </div>
       <div className="divider"></div>
-      <Table columns={columns} dataSource={exams} />
+      <Table columns={columns} dataSource={filteredExams} />
     </div>
   );
 }

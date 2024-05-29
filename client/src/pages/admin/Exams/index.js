@@ -1,14 +1,18 @@
-import { message, Table } from "antd";
-import React, { useEffect } from "react";
+import { message, Table, Select } from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteExamById, getAllExams } from "../../../apicalls/exams";
 import PageTitle from "../../../components/PageTitle";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 
+const { Option } = Select;
+
 function Exams() {
   const navigate = useNavigate();
-  const [exams, setExams] = React.useState([]);
+  const [exams, setExams] = useState([]);
+  const [modeFilter, setModeFilter] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState(null);
   const dispatch = useDispatch();
 
   const getExamsData = async () => {
@@ -45,6 +49,32 @@ function Exams() {
       message.error(error.message);
     }
   };
+
+  const handleModeChange = (value) => {
+    setModeFilter(value);
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategoryFilter(value);
+  };
+
+  const filteredExams = exams.filter((exam) => {
+    if (modeFilter && modeFilter !== "All") {
+      if (modeFilter === "Timer" && exam.duration) {
+        return true;
+      } else if (modeFilter === "NoTimer" && !exam.duration) {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }).filter((exam) => {
+    if (categoryFilter && categoryFilter !== "All") {
+      return exam.category === categoryFilter;
+    }
+    return true;
+  });
+
   const columns = [
     {
       title: "Exam Name",
@@ -61,7 +91,6 @@ function Exams() {
     {
       title: "Duration",
       dataIndex: "duration",
-      render: (text) => (text === null ? "-" : text),
     },
     {
       title: "Total Marks",
@@ -88,25 +117,42 @@ function Exams() {
       ),
     },
   ];
+
   useEffect(() => {
     getExamsData();
   }, []);
+
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
         <PageTitle title="Exams" />
 
-        <button
-          className="primary-outlined-btn flex items-center"
-          onClick={() => navigate("/admin/exams/add")}
-        >
-          <i className="ri-add-line"></i>
-          Add Exam
-        </button>
+        <div className="flex gap-2">
+          <Select defaultValue="All" onChange={handleModeChange}>
+            <Option value="All">All Mode</Option>
+            <Option value="Timer">Timer</Option>
+            <Option value="NoTimer">No Timer</Option>
+          </Select>
+
+          <Select defaultValue="All" onChange={handleCategoryChange}>
+            <Option value="All">All Category</Option>
+            <Option value="Knowledge">Knowledge</Option>
+            <Option value="Entertainment">Entertainment</Option>
+            <Option value="Game">Game</Option>
+          </Select>
+
+          <button
+            className="primary-outlined-btn flex items-center"
+            onClick={() => navigate("/admin/exams/add")}
+          >
+            <i className="ri-add-line"></i>
+            Add Exam
+          </button>
+        </div>
       </div>
       <div className="divider"></div>
 
-      <Table columns={columns} dataSource={exams} />
+      <Table columns={columns} dataSource={filteredExams} />
     </div>
   );
 }

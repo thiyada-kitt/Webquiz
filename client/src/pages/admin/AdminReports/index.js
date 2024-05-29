@@ -40,16 +40,6 @@ function AdminReports() {
       dataIndex: "correctAnswers",
       render: (text, record) => <>{record.result.correctAnswers.length}</>,
     },
-    // {
-    //   title: "Total time",
-    //   dataIndex: "timeUsed",
-    //   render: (text, record) => (
-    //     <>
-    //       {("0" + Math.floor(record.result.timeUsed / 60)).slice(-2)}:
-    //       {("0" + (record.result.timeUsed % 60)).slice(-2)}
-    //     </>
-    //   ),
-    // },
     {
       title: "Verdict",
       dataIndex: "verdict",
@@ -102,6 +92,17 @@ function AdminReports() {
     getData(filters);
   }, []);
 
+  // Function to filter reports based on case-insensitive match
+  const filteredData = reportsData.filter((report) => {
+    const examNameMatch = report.exam.name
+      .toLowerCase()
+      .includes(filters.examName.toLowerCase());
+    const userNameMatch = report.user.name
+      .toLowerCase()
+      .includes(filters.userName.toLowerCase());
+    return examNameMatch && userNameMatch;
+  });
+
   return (
     <div>
       <PageTitle title="Reports" />
@@ -128,7 +129,7 @@ function AdminReports() {
           Search
         </button>
       </div>
-      <Table columns={columns} dataSource={reportsData} className="mt-2" />
+      <Table columns={columns} dataSource={filteredData} className="mt-2" />
     </div>
   );
 }

@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageTitle from "../../../components/PageTitle";
-import { message, Modal, Table } from "antd";
+import { message, Modal, Table, Select } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getAllReportsByUser } from "../../../apicalls/reports";
-import { useEffect } from "react";
 import moment from "moment";
 
-
+const { Option } = Select;
 
 function UserReports() {
-
-
-  const [reportsData, setReportsData] = React.useState([]);
+  const [reportsData, setReportsData] = useState([]);
+  const [verdictFilter, setVerdictFilter] = useState(null); // Add verdictFilter and setVerdictFilter
   const dispatch = useDispatch();
+
   const columns = [
     {
       title: "Exam Name",
@@ -47,11 +46,6 @@ function UserReports() {
         <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
       ),
     }
-    // {
-    //   title: "Total time",
-    //   dataIndex: "timeUsed",
-    //   render: (text, record) => <>{("0" + Math.floor(record.result.timeUsed/60)).slice(-2)}:{("0" + record.result.timeUsed%60).slice(-2)}</>,
-    // }
   ];
 
   const getData = async () => {
@@ -74,11 +68,33 @@ function UserReports() {
     getData();
   }, []);
 
+  const handleVerdictChange = (value) => {
+    setVerdictFilter(value);
+  };
+
+  const filteredReports = reportsData.filter((report) => {
+    if (verdictFilter && verdictFilter !== "All") {
+      // Filter by verdict
+      // Assuming verdict data is available in each report object
+      return report.result.verdict === verdictFilter;
+    }
+    return true;
+  });
+
   return (
     <div>
-      <PageTitle title="Reports" />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <PageTitle title="Reports" />
+        <div>
+          <Select defaultValue="All" onChange={handleVerdictChange}>
+            <Option value="All">All Verdict</Option>
+            <Option value="Pass">Pass</Option>
+            <Option value="Fail">Fail</Option>
+          </Select>
+        </div>
+      </div>
       <div className="divider"></div>
-      <Table columns={columns} dataSource={reportsData} />
+      <Table columns={columns} dataSource={filteredReports} />
     </div>
   );
 }

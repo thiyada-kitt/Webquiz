@@ -3,6 +3,17 @@
 * {
   font-family: "Montserrat", sans-serif !important;
 }
+
+/* ซ่อน Scroll Bar ใน Chrome, Safari และเบราว์เซอร์ที่ใช้ WebKit */
+body {
+  overflow: hidden; /* ซ่อน Scroll Bar */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* ซ่อน Scroll Bar ใน WebKit */
+}
+
+/* Custom styles */
 .cursor-pointer {
   cursor: pointer;
   padding: 3px;
@@ -16,29 +27,27 @@
 }
 
 .card {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-radius: 20px;
 }
 
 .primarya-contained-btn {
   background-color: #3D3c3A;
   color: white;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-radius: 20px;
 }
+
 .primarya-outlined-btn {
   background-color: #ffffff;
 }
+
 .primarya-contained-btn:hover {
   background-color: black;
 }
+
 .primarya-outlined-btn:hover {
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
 }
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -94,7 +103,11 @@
 
 .content {
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: auto; /* อนุญาตให้เลื่อนเนื้อหาภายในได้ */
+}
+
+.content::-webkit-scrollbar {
+  display: none; /* ซ่อน Scroll Bar ใน WebKit */
 }
 
 .footer {
@@ -102,7 +115,7 @@
   bottom: 0;
   background-color: #ffffff;
   text-align: center;
-  padding-top: 10px;
+  padding-top: 5px;
   left: 0;
   right: 0;
 }
