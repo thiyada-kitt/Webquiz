@@ -1,5 +1,5 @@
 :root {
-  --primary: #0F3460;
+  --primary: #21589b;
   --secondary: #ff5722;
   --success: #6fbf71;
   --info: #00bcd4;
@@ -7,7 +7,7 @@
   --danger: #f44336;
   --light: #f1f1f1;
   --dark: #212121;
-  --adminReg: #c76cff;
+  --adminReg: #ae5b32;
 }
 
 .bg-primary{
