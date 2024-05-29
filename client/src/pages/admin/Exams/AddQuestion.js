@@ -50,6 +50,7 @@ function AddEditQuestion({
         tempUser: user,
       };
 
+      console.log(requiredPayload)
       let response;
         if(selectedQuestion){
             response = await editQuestionById({
@@ -127,7 +128,7 @@ function AddEditQuestion({
           >
             Cancel
           </button>
-          <button className="primary-contained-btn">Save</button>
+          <button className="primary-contained-btn" >Save</button>
         </div>
       </Form>
     </Modal>
