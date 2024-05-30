@@ -97,21 +97,21 @@ function App(){
                 </div>
                 <div className="flex flex-col my-2">
                   { !isChangePassword ?
-                    <button type="button" onClick={togglePasswordChange} style={{ width: '645px' }} className="primary-outlined-btn">Password change</button>
+                    <button type="button" onClick={togglePasswordChange}  className="w-10 border-solid border-black border-4 my-2 w-40 bg-white">Password change</button>
                   :
                     <>
                       <label>Password</label>
-                      <input type="password" className="w-10 border-solid border-black border-4 my-2 w-40" value={password} onChange={passwordChange} required></input>
+                      <input type="password" className="w-10 border-solid border-black border-4 my-2 w-40 bg-white" value={password} onChange={passwordChange} required></input>
                       <label className="mt-2">Confirm password</label>
                       <input type="password" className="w-10 border-solid border-black border-4 my-2 w-40" value={confirmedPassword} onChange={confirmedPasswordChange} required></input>
-                      <button type="button" onClick={togglePasswordChange} className="primary-outlined-btn" style={{ width: '645px' }}>Cancel password change</button>
+                      <button type="button" onClick={togglePasswordChange}  className="w-10 border-solid border-black border-4 my-2 w-40 bg-white">Cancel password change</button>
                     </>
                   }
                 </div>
-                <button className="primary-outlined-btn" type="button" onClick={updateUser} style={{ width: '645px' }}>Confirm changes</button>
+                <button type="button" onClick={updateUser} className="w-10 border-solid border-black border-4 my-2 w-40 bg-white">Confirm changes</button>
             </div>
         </div>
-    )//
+    )
 }
 
 export default App;

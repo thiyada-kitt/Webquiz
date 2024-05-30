@@ -10,8 +10,22 @@ function ProtectedRoute({ children }) {
   const { user } = useSelector((state) => state.users);
   const [menu, setMenu] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const userMenu = [
     {
@@ -19,36 +33,24 @@ function ProtectedRoute({ children }) {
       paths: ["/", "/user/write-exam"],
       onClick: () => navigate("/"),
       icon: <i className="ri-gamepad-line"></i>,
-      className: "play-menu-item", 
+      className: "play-menu-item",
       style: {
         backgroundColor: "#10a810",
         border: "1px solid white",
-        color: "while",
+        color: "white",
         padding: "10px 20px",
         borderRadius: "5px",
         textAlign: "center",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginbottom: "25",
+        marginBottom: "25px",
       },
       hoverStyle: {
         backgroundColor: "#10a810",
-        color: "white"
-      }
+        color: "white",
+      },
     },
-    // {
-    //   title: "Timed mode",
-    //   paths: ["user/timemode"],
-    //   icon: <i className="ri-timer-line"></i>,
-    //   onClick: () => navigate("/"),
-    // },
-    // {
-    //   title: "Non-timed mode",
-    //   paths: ["user/notimemode"],
-    //   icon: <i className="ri-close-circle-line"></i>,
-    //   onClick: () => navigate("/"),
-    // },
     {
       title: "Leaderboard",
       paths: ["/leaderboard"],
@@ -67,12 +69,6 @@ function ProtectedRoute({ children }) {
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/user/reports"),
     },
-    // {
-    //   title: "Profile",
-    //   paths: ["/profile"],
-    //   icon: <i className="ri-file-list-line"></i>,
-    //   onClick: () => navigate("/profile"),
-    // },
     {
       title: "Logout",
       paths: ["/logout"],
@@ -90,11 +86,11 @@ function ProtectedRoute({ children }) {
       paths: ["/", "/admin/write-exam"],
       onClick: () => navigate("/"),
       icon: <i className="ri-gamepad-line"></i>,
-      className: "play-menu-item", 
+      className: "play-menu-item",
       style: {
         backgroundColor: "#10a810",
         border: "1px solid white",
-        color: "while",
+        color: "white",
         padding: "10px 20px",
         borderRadius: "5px",
         textAlign: "center",
@@ -104,8 +100,8 @@ function ProtectedRoute({ children }) {
       },
       hoverStyle: {
         backgroundColor: "#10a810",
-        color: "white"
-      }
+        color: "white",
+      },
     },
     {
       title: "Leaderboard",
@@ -125,12 +121,6 @@ function ProtectedRoute({ children }) {
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/admin/reports"),
     },
-    // {
-    //   title: "Profile",
-    //   paths: ["/profile"],
-    //   icon: <i className="ri-file-list-line"></i>,
-    //   onClick: () => navigate("/profile"),
-    // },
     {
       title: "Logout",
       paths: ["/logout"],
@@ -163,7 +153,7 @@ function ProtectedRoute({ children }) {
       message.error(error.message);
     }
   };
- // eslint-disable-next-line
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getUserData();
@@ -171,7 +161,7 @@ function ProtectedRoute({ children }) {
       navigate("/login");
     }
   }, []);
-  
+
   const activeRoute = window.location.pathname;
 
   const getIsActiveOrNot = (paths) => {
@@ -197,10 +187,10 @@ function ProtectedRoute({ children }) {
   return (
     <div className="layout">
       <div className="flex gap-2 w-full h-full h-100">
-        <div className="sidebar">
-          <div className="menu">
-            {menu.map((item, index) => {
-              return (
+        {(!isSmallScreen || collapsed) && (
+          <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+            <div className="menu">
+              {menu.map((item, index) => (
                 <div
                   className={`menu-item ${getIsActiveOrNot(item.paths) && "active-menu-item"}`}
                   key={index}
@@ -218,18 +208,28 @@ function ProtectedRoute({ children }) {
                   {item.icon}
                   {!collapsed && <span>{item.title}</span>}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         <div className="body">
-          <div className="header flex justify-between">
-            {!collapsed ? (
-              <i className="ri-close-line" onClick={() => setCollapsed(true)}></i>
-            ) : (
-              <i className="ri-menu-line" onClick={() => setCollapsed(false)}></i>
-            )}
-            <h1 className="text-2xl text-white cursor-pointer" onClick={() => navigate("/")}>Quizuzz!</h1>
+          <div className="header flex justify-between items-center">
+            <i
+              className={isSmallScreen ? "ri-menu-line" : "ri-close-line"}
+              onClick={() => {
+                if (isSmallScreen) {
+                  setDropdownVisible(!dropdownVisible);
+                } else {
+                  setCollapsed(!collapsed);
+                }
+              }}
+            ></i>
+            <h1
+              className="text-2xl text-white cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Quizuzz!
+            </h1>
             <div onClick={() => navigate("/profile")} className="cursor-pointer">
               <div className="flex gap-1 items-center">
                 <h1 className="text-md text-white">{user?.name}</h1>
@@ -237,9 +237,36 @@ function ProtectedRoute({ children }) {
               <span>Role : {user?.isAdmin ? "Admin" : "User"}</span>
             </div>
           </div>
+          {isSmallScreen && dropdownVisible && (
+            <div className="dropdown-menu">
+              {menu.map((item, index) => (
+                <div
+                  className={`dropdown-item ${getIsActiveOrNot(item.paths) && "active-dropdown-item"}`}
+                  key={index}
+                  onClick={() => {
+                    item.onClick();
+                    setDropdownVisible(false);
+                  }}
+                >
+                  {item.icon}
+                  <span>{item.title}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="content">{children}</div>
           <div className="footer">
-            <p>Copyright 2024 © Quizuzz! <a href="https://discord.gg/KQUPYeSH" target="_blank" rel="noopener noreferrer" style={{ borderBottom: "1px solid black" }}>Contact us</a></p>
+            <p>
+              Copyright 2024 © Quizuzz!{" "}
+              <a
+                href="https://discord.gg/KQUPYeSH"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ borderBottom: "1px solid black" }}
+              >
+                Contact us
+              </a>
+            </p>
           </div>
         </div>
       </div>

@@ -103,11 +103,11 @@ body::-webkit-scrollbar {
 
 .content {
   padding: 20px;
-  overflow-y: auto; /* อนุญาตให้เลื่อนเนื้อหาภายในได้ */
+  overflow-y: auto; 
 }
 
 .content::-webkit-scrollbar {
-  display: none; /* ซ่อน Scroll Bar ใน WebKit */
+  display: none;
 }
 
 .footer {
@@ -119,3 +119,52 @@ body::-webkit-scrollbar {
   left: 0;
   right: 0;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .sidebar.collapsed {
+    display: block;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100px;
+    left: 20;
+    width: 95%;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-item {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .dropdown-item:hover {
+    background-color: #a19e9e;
+  }
+
+  .active-dropdown-item {
+    background-color: #10a810;
+    color: white;
+  }
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+

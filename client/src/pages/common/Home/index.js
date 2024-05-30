@@ -109,7 +109,7 @@ function Home() {
         <PageTitle title={`All exam in quizuzz!`} />
         <div className="divider"></div>
         <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-          <Col span={4}>
+          <Col xs={24} sm={24} md={10} lg={6} xl={6}>
             <Input
               placeholder="Exam name. . ."
               value={searchTerm}
@@ -117,7 +117,7 @@ function Home() {
               onKeyPress={handleKeyPress}
             />
           </Col>
-          <Col span={4}>
+          <Col xs={12} sm={12} md={6} lg={4} xl={3}>
             <Select
               value={selectedMode}
               style={{ width: "100%" }}
@@ -128,7 +128,7 @@ function Home() {
               <Option value="No timer">No timer</Option>
             </Select>
           </Col>
-          <Col span={4}>
+          <Col xs={12} sm={12} md={6} lg={4} xl={3}>
             <Select
               value={selectedCategory}
               style={{ width: "100%" }}
@@ -140,13 +140,13 @@ function Home() {
               <Option value="Game">Game</Option>
             </Select>
           </Col>
-          <Col span={8}>
+          <Col xs={24} sm={16} md={8} lg={4} xl={3}>
             <button className="primary-contained-btn" onClick={handleClearFilters}>Clear</button>
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
           {currentCards.map((exam) => (
-            <Col span={6} key={exam._id}>
+            <Col xs={24} sm={12} md={12} lg={6} key={exam._id}>
               <div className="card-lg flex flex-col gap-1 p-2">
                 <h1 className="text-2xl">{exam?.name}</h1>
                 <h1 className="text-md">Mode : {exam.mode}</h1>
