@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,6 +22,7 @@ function WriteExam() {
   const [intervalId, setIntervalId] = useState(null);
   const { user } = useSelector((state) => state.users);
   const [timeUsed, setTimeUsed] = useState(0);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // State for the confirmation modal
 
   const getExamData = async () => {
     try {
@@ -123,6 +124,30 @@ function WriteExam() {
     return questions.length === Object.keys(selectedOptions).length;
   };
 
+  const handleSubmit = () => {
+    if (areAllQuestionsAnswered()) {
+      if (timeUp) {
+        calculateResult();
+      } else {
+        setShowConfirmModal(true);
+      }
+    } else {
+      message.error("Please answer all questions before submitting.");
+    }
+  };
+
+  const handleCancelSubmit = () => {
+    setShowConfirmModal(false);
+  };
+
+  const handleConfirmSubmit = () => {
+    setShowConfirmModal(false);
+    if (!timeUp) {
+      clearInterval(intervalId);
+      calculateResult();
+    }
+  };
+
   return (
     examData && (
       <div className="mt-2">
@@ -178,13 +203,15 @@ function WriteExam() {
                           setSelectedQuestionIndex(selectedQuestionIndex + 1);
                         } else {
                           if (areAllQuestionsAnswered()) {
-                            clearInterval(intervalId);
-                            setTimeUp(true);
+                            // clearInterval(intervalId);
+                            // setTimeUp(true);
+                            setShowConfirmModal(true);
                           } else {
                             message.error("Please answer all questions before submitting.");
                           }
                         }
                       }}
+                      style={{ cursor: "pointer" }} // Adding cursor pointer style
                     >
                       <h1 className="text-xl">
                         {option} :{" "}
@@ -218,18 +245,10 @@ function WriteExam() {
                   Next
                 </button>
               )}
-
-              {selectedQuestionIndex === questions.length - 1 && (
+                            {selectedQuestionIndex === questions.length - 1 && (
                 <button
                   className="primary-contained-btn"
-                  onClick={() => {
-                    if (areAllQuestionsAnswered()) {
-                      clearInterval(intervalId);
-                      setTimeUp(true);
-                    } else {
-                      message.error("Please answer all questions before submitting.");
-                    }
-                  }}
+                  onClick={handleSubmit} // Triggering the submit function
                 >
                   Submit
                 </button>
@@ -356,9 +375,26 @@ function WriteExam() {
             </div>
           </div>
         )}
+
+        {/* Confirmation Modal */}
+        <div className="modal-container">
+          <Modal
+            title="Submit Exam"
+            visible={showConfirmModal}
+            onOk={handleConfirmSubmit}
+            onCancel={handleCancelSubmit}
+            okText="Submit"
+            cancelText="Cancel"
+            className="modal-content"
+            style={{ marginTop: "20vh" }}
+          >
+            <p>Are you sure you want to submit the exam?</p>
+          </Modal>
+        </div>
       </div>
     )
   );
 }
 
 export default WriteExam;
+

@@ -58,13 +58,13 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/leaderboard"),
     },
     {
-      title: "Exams",
+      title: "My exams",
       paths: ["/user/exams", "/user/exams/add"],
       icon: <i className="ri-file-list-line"></i>,
       onClick: () => navigate("/user/exams"),
     },
     {
-      title: "Reports",
+      title: "My reports",
       paths: ["/user/reports"],
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/user/reports"),
@@ -110,13 +110,13 @@ function ProtectedRoute({ children }) {
       onClick: () => navigate("/leaderboard"),
     },
     {
-      title: "Exams",
+      title: "All exams",
       paths: ["/admin/exams", "/admin/exams/add"],
       icon: <i className="ri-file-list-line"></i>,
       onClick: () => navigate("/admin/exams"),
     },
     {
-      title: "Reports",
+      title: "All reports",
       paths: ["/admin/reports"],
       icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/admin/reports"),

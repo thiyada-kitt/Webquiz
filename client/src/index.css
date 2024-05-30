@@ -168,3 +168,6 @@ body::-webkit-scrollbar {
   flex-direction: column;
 }
 
+.option:hover {
+  cursor: pointer;
+}
