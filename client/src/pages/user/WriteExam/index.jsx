@@ -258,7 +258,7 @@ function WriteExam() {
         {view === "result" && (
           <div className="flex  items-center mt-2 justify-center result">
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl">RESULT</h1>
+              <h1 className="text-2xl">Result</h1>
                <div className="divider"></div>
               <div className="marks">
                 <h1 className="text-md">Total Marks : {examData.totalMarks}</h1>
