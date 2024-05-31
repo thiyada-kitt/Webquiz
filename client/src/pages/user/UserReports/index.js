@@ -84,7 +84,7 @@ function UserReports() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <PageTitle title="Reports" />
+        <PageTitle title="My Reports" />
         <div>
           <Select defaultValue="All" onChange={handleVerdictChange}>
             <Option value="All">All Verdict</Option>

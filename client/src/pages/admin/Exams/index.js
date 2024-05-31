@@ -126,7 +126,7 @@ function Exams() {
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
-        <PageTitle title="Exams" />
+        <PageTitle title="All Exams" />
 
         <div className="flex gap-2">
           <Select defaultValue="All" onChange={handleModeChange}>

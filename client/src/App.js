@@ -21,6 +21,7 @@ import WriteExam from "./pages/user/WriteExam";
 import UserReports from "./pages/user/UserReports";
 import AdminReports from "./pages/admin/AdminReports";
 import Leaderboard from "./feature/leaderboard"
+import MyExamReports from "./pages/user/Exams/MyExamReports"; 
 import Profile from "./pages/common/Profile/Profile"
 import AdminReg from "./pages/common/AdminReg"
 
@@ -85,6 +86,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+          path="/user/exams/myexam/:examId"
+          element={
+            <ProtectedRoute>
+              <MyExamReports />
+            </ProtectedRoute>
+            }
+          />
+
           {/* Admin Routes */}
           <Route
             path="/admin/exams"

@@ -273,7 +273,7 @@ function WriteExam() {
                 <h1 className="text-md">
                   Passing Marks : {examData.passingMarks}
                 </h1>
-                <h1 className="text-md">VERDICT :{result.verdict}</h1>
+                <h1 className="text-md">Verdict :{result.verdict}</h1>
 
                 <div className="flex gap-2 mt-2">
                   <button
@@ -386,7 +386,7 @@ function WriteExam() {
             okText="Submit"
             cancelText="Cancel"
             className="modal-content"
-            style={{ marginTop: "20vh" }}
+            style={{ marginTop: "20vh"}}
           >
             <p>Are you sure you want to submit the exam?</p>
           </Modal>

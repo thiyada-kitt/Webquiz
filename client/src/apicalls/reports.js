@@ -1,3 +1,4 @@
+import axios from "axios";
 const { default: axiosInstance } = require(".");
 
 // add report
@@ -39,3 +40,12 @@ export const getAllReportsByUser = async () => {
         return error.response.data;
     }
 }
+
+export const getReportsByExam = async (examId) => {
+    try {
+      const response = await axios.get(`/api/reports/get-reports-by-exam/${examId}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };

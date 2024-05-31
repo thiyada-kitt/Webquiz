@@ -277,7 +277,7 @@ function AddEditExam() {
                 </button>
               </div>
             </TabPane>
-            <TabPane tab={params.id ? "Questions" : "Questions (Draft)"} key="2">
+            <TabPane tab={params.id ? "Questions" : "Questions"} key="2">
               <div className="flex justify-end">
                 <button
                   className="primary-outlined-btn"

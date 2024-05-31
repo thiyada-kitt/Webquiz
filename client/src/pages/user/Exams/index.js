@@ -129,6 +129,18 @@ function Exams() {
         </div>
       ),
     },
+    {
+      title: "Reports",
+      dataIndex: "reports",
+      render: (text, record) => (
+        <div className="flex gap-2">
+          <i
+            className="ri-bar-chart-line"
+            onClick={() => navigate(`/user/exams/myexam/${record._id}`)}
+          ></i>
+        </div>
+      ),
+    }
   ];
 
   useEffect(() => {
@@ -139,7 +151,7 @@ function Exams() {
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
-        <PageTitle title="Exams" />
+        <PageTitle title="My Exams" />
         <div className="flex gap-2">
           <Select defaultValue="All" onChange={handleModeChange}>
             <Option value="All">All Mode</Option>

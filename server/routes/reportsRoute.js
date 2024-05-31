@@ -136,4 +136,20 @@ router.post("/get-all-reports-by-user", authMiddleware, async (req, res) => {
   }
 });
 
+// Get reports by exam ID
+router.get("/get-reports-by-exam/:examId", async (req, res) => {
+  try {
+    const reports = await Report.find({ exam: req.params.examId }).populate('user', 'name');
+    res.status(200).json({
+      success: true,
+      data: reports,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
