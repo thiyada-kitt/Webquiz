@@ -29,8 +29,7 @@ function AddEditQuestion({
       message.error(error.message);
     }
   };
-  const [user, setUser] = React.useState("") // Mark creator for an exam
-
+  const [user, setUser] = React.useState("") 
     React.useEffect(() => {
         getUserData();
     }, []);
@@ -59,7 +58,7 @@ function AddEditQuestion({
             })
         }
         else{
-            response = await addPresetQuestion(requiredPayload); // Should be fixed here
+            response = await addPresetQuestion(requiredPayload); 
         }
       if (response.success) {
         message.success(response.message);

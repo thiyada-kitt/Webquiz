@@ -20,11 +20,14 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
+    "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^6.6.4",
     "nodemon": "^2.0.20",
+    "npm": "^10.8.1",
     "react-icons": "^5.2.1",
+    "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0"
   }
 }

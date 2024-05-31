@@ -24,7 +24,6 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         setUserID(response.data._id);
-        // getExamsData(response.data._id);  // Fetch exams data after getting user ID
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -57,7 +56,7 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
-        getExamsData(userID);  // Refresh exams data after deletion
+        getExamsData(userID);  
       } else {
         message.error(response.message);
       }
@@ -129,6 +128,18 @@ function Exams() {
         </div>
       ),
     },
+    {
+      title: "Reports",
+      dataIndex: "reports",
+      render: (text, record) => (
+        <div className="flex gap-2">
+          <i
+            className="ri-bar-chart-line"
+            onClick={() => navigate(`/user/exams/myexam/${record._id}`)}
+          ></i>
+        </div>
+      ),
+    }
   ];
 
   useEffect(() => {
@@ -139,7 +150,7 @@ function Exams() {
   return (
     <div>
       <div className="flex justify-between mt-2 items-end">
-        <PageTitle title="Exams" />
+        <PageTitle title="My Exams" />
         <div className="flex gap-2">
           <Select defaultValue="All" onChange={handleModeChange}>
             <Option value="All">All Mode</Option>

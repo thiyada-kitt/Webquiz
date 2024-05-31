@@ -24,7 +24,7 @@ function Home() {
       const response = await getAllExams();
       if (response.success) {
         setExams(response.data);
-        setFilteredExams(response.data); // ตั้งค่าเริ่มต้นของ filteredExams
+        setFilteredExams(response.data);
       } else {
         message.error(response.message);
       }
@@ -92,9 +92,9 @@ function Home() {
   const handleClearFilters = () => {
     setSelectedMode("All");
     setSelectedCategory("All");
-    setSearchTerm(''); // ล้างค่าในช่องที่ให้พิม Exam name
-    setFilteredExams(exams); // รีเซ็ต filteredExams
-    setCurrentPage(1); // รีเซ็ตหน้าเว็บไปที่หน้าแรก
+    setSearchTerm(''); 
+    setFilteredExams(exams); 
+    setCurrentPage(1); 
   };
 
   const handleKeyPress = (e) => {

@@ -58,6 +58,7 @@ function AddEditQuestion({
       title={selectedQuestion ? "Edit Question" : "Add Question"}
       visible={showAddEditQuestionModal}
       footer={false}
+      style={{ marginTop: "12vh" }}
       onCancel={() => {
         setShowAddEditQuestionModal(false)
         setSelectedQuestion(null)

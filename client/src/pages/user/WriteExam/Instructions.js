@@ -6,8 +6,8 @@ function Instructions({ examData, setView, startTimer }) {
   return (
     <div className="flex flex-col items-center gap-5">
       <ul className="flex flex-col gap-1">
-        <h1 className="text-2xl underline">Instructions</h1>
-        <li>Exam must be completed in {examData.duration} seconds.</li>
+        <h1 className="text-2xl underline" style={{ textAlign: 'center', marginTop: '20px' }}>Instructions</h1>
+        <li style={{ marginTop: '20px' }}>Exam must be completed in {examData.duration} seconds.</li>
         <li>
           Exam will be submitted automatically after {examData.duration}{" "}
           seconds.
@@ -18,6 +18,9 @@ function Instructions({ examData, setView, startTimer }) {
           You can use the <span className="font-bold">"Previous"</span> and{" "}
           <span className="font-bold">"Next"</span> buttons to navigate between
           questions.
+        </li>
+        <li>
+          Can Double cilck to go next page
         </li>
         <li>
           Total marks of the exam is{" "}
@@ -33,7 +36,7 @@ function Instructions({ examData, setView, startTimer }) {
         <button className="primary-outlined-btn"
          onClick={()=>navigate('/')}
         >
-              CLOSE
+              Close
         </button>
         <button
           className="primary-contained-btn"

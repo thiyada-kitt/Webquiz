@@ -104,7 +104,7 @@ function App() {
       userName: "",
     });
     setSearchInput("");
-    setSetofResults([]); // Clear the results
+    setSetofResults([]); 
   };
   
   const getData = async (filters) => {

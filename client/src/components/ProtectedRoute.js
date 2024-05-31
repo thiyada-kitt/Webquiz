@@ -1,5 +1,5 @@
 import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getUserInfo } from "../apicalls/users";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/usersSlice.js";
@@ -14,17 +14,53 @@ function ProtectedRoute({ children }) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth <= 768);
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownVisible && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(true);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [dropdownVisible]);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        dispatch(ShowLoading());
+        const response = await getUserInfo();
+        dispatch(HideLoading());
+        if (response.success) {
+          dispatch(SetUser(response.data));
+          setMenu(response.data.isAdmin ? adminMenu : userMenu);
+        } else {
+          message.error(response.message);
+        }
+      } catch (error) {
+        navigate("/login");
+        dispatch(HideLoading());
+        message.error(error.message);
+      }
+    };
+    if (localStorage.getItem("token")) {
+      getUserData();
+    } else {
+      navigate("/login");
+    }
   }, []);
 
   const userMenu = [
@@ -132,35 +168,9 @@ function ProtectedRoute({ children }) {
     },
   ];
 
-  const getUserData = async () => {
-    try {
-      dispatch(ShowLoading());
-      const response = await getUserInfo();
-      dispatch(HideLoading());
-      if (response.success) {
-        dispatch(SetUser(response.data));
-        if (response.data.isAdmin) {
-          setMenu(adminMenu);
-        } else {
-          setMenu(userMenu);
-        }
-      } else {
-        message.error(response.message);
-      }
-    } catch (error) {
-      navigate("/login");
-      dispatch(HideLoading());
-      message.error(error.message);
-    }
+  const toggleMenu = () => {
+    setDropdownVisible(!dropdownVisible);
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getUserData();
-    } else {
-      navigate("/login");
-    }
-  }, []);
 
   const activeRoute = window.location.pathname;
 
@@ -218,7 +228,7 @@ function ProtectedRoute({ children }) {
               className={isSmallScreen ? "ri-menu-line" : "ri-close-line"}
               onClick={() => {
                 if (isSmallScreen) {
-                  setDropdownVisible(!dropdownVisible);
+                  toggleMenu();
                 } else {
                   setCollapsed(!collapsed);
                 }
@@ -230,15 +240,23 @@ function ProtectedRoute({ children }) {
             >
               Quizuzz!
             </h1>
-            <div onClick={() => navigate("/profile")} className="cursor-pointer">
-              <div className="flex gap-1 items-center">
-                <h1 className="text-md text-white">{user?.name}</h1>
+            {isSmallScreen ? (
+              <i
+                className="ri-user-settings-line cursor-pointer"
+                onClick={() => navigate("/profile")}
+              ></i>
+            ) : (
+              <div onClick={() => navigate("/profile")} className="cursor-pointer flex gap-1 items-center">
+                <i className="ri-user-settings-line"></i>
+                <div>
+                  <h1 className="text-md text-white">{user?.name}</h1>
+                  <span>Role : {user?.isAdmin ? "Admin" : "User"}</span>
+                </div>
               </div>
-              <span>Role : {user?.isAdmin ? "Admin" : "User"}</span>
-            </div>
+            )}
           </div>
           {isSmallScreen && dropdownVisible && (
-            <div className="dropdown-menu">
+            <div className="dropdown-menu" ref={dropdownRef} style={{ width: "90%"}}>
               {menu.map((item, index) => (
                 <div
                   className={`dropdown-item ${getIsActiveOrNot(item.paths) && "active-dropdown-item"}`}

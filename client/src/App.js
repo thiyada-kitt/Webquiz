@@ -10,7 +10,6 @@ import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/common/Home";
-// import Exams from "./pages/admin/Exams";
 import Exams from "./pages/user/Exams";
 import AdminExams from "./pages/admin/Exams";
 import UserAddEditExam from "./pages/user/Exams/AddEditExam";
@@ -21,6 +20,7 @@ import WriteExam from "./pages/user/WriteExam";
 import UserReports from "./pages/user/UserReports";
 import AdminReports from "./pages/admin/AdminReports";
 import Leaderboard from "./feature/leaderboard"
+import MyExamReports from "./pages/user/Exams/MyExamReports"; 
 import Profile from "./pages/common/Profile/Profile"
 import AdminReg from "./pages/common/AdminReg"
 
@@ -85,6 +85,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+          path="/user/exams/myexam/:examId"
+          element={
+            <ProtectedRoute>
+              <MyExamReports />
+            </ProtectedRoute>
+            }
+          />
+
           {/* Admin Routes */}
           <Route
             path="/admin/exams"

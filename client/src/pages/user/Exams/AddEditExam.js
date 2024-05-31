@@ -163,7 +163,7 @@ function AddEditExam() {
     }
   };
 
-  const [user, setUser] = React.useState(null); // Mark creator for an exam
+  const [user, setUser] = React.useState(null);
 
   useEffect(() => {
     getUserData();

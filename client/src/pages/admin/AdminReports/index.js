@@ -105,7 +105,7 @@ function AdminReports() {
     <div>
       <Row justify="space-between" align="middle">
         <Col>
-          <PageTitle title="Reports" />
+          <PageTitle title="All Reports" />
         </Col>
         <Col>
           <Select
