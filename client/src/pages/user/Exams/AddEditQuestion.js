@@ -29,7 +29,7 @@ function AddEditQuestion({
       message.error(error.message);
     }
   };
-  const [user, setUser] = React.useState("") // Mark creator for an exam
+  const [user, setUser] = React.useState("") 
 
     React.useEffect(() => {
         getUserData();
@@ -50,7 +50,6 @@ function AddEditQuestion({
         exam: examId,
       };
 
-      // let response
       console.log(requiredPayload)
       let response;
         if(selectedQuestion){

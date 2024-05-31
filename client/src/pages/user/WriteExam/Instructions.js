@@ -20,6 +20,9 @@ function Instructions({ examData, setView, startTimer }) {
           questions.
         </li>
         <li>
+          Can Double cilck to go next page
+        </li>
+        <li>
           Total marks of the exam is{" "}
           <span className="font-bold">{examData.totalMarks}</span>.
         </li>

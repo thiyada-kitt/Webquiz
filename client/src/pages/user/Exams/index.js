@@ -24,7 +24,6 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         setUserID(response.data._id);
-        // getExamsData(response.data._id);  // Fetch exams data after getting user ID
       }
     } catch (error) {
       dispatch(HideLoading());
@@ -57,7 +56,7 @@ function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
-        getExamsData(userID);  // Refresh exams data after deletion
+        getExamsData(userID);  
       } else {
         message.error(response.message);
       }

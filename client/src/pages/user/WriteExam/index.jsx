@@ -22,7 +22,7 @@ function WriteExam() {
   const [intervalId, setIntervalId] = useState(null);
   const { user } = useSelector((state) => state.users);
   const [timeUsed, setTimeUsed] = useState(0);
-  const [showConfirmModal, setShowConfirmModal] = useState(false); // State for the confirmation modal
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const getExamData = async () => {
     try {
@@ -203,15 +203,13 @@ function WriteExam() {
                           setSelectedQuestionIndex(selectedQuestionIndex + 1);
                         } else {
                           if (areAllQuestionsAnswered()) {
-                            // clearInterval(intervalId);
-                            // setTimeUp(true);
                             setShowConfirmModal(true);
                           } else {
                             message.error("Please answer all questions before submitting.");
                           }
                         }
                       }}
-                      style={{ cursor: "pointer" }} // Adding cursor pointer style
+                      style={{ cursor: "pointer" }} 
                     >
                       <h1 className="text-xl">
                         {option} :{" "}
@@ -248,7 +246,7 @@ function WriteExam() {
                             {selectedQuestionIndex === questions.length - 1 && (
                 <button
                   className="primary-contained-btn"
-                  onClick={handleSubmit} // Triggering the submit function
+                  onClick={handleSubmit} 
                 >
                   Submit
                 </button>
@@ -283,7 +281,7 @@ function WriteExam() {
                       setSelectedQuestionIndex(0);
                       setSelectedOptions({});
                       setSecondsLeft(examData.duration !== null ? examData.duration : 0);
-                      setTimeUp(false); // Fix retake exams not working properly
+                      setTimeUp(false); 
                     }}
                   >
                     Retake Exam
@@ -388,7 +386,7 @@ function WriteExam() {
             className="modal-content"
             style={{ marginTop: "20vh"}}
           >
-            <p>Are you sure you want to submit the exam?</p>
+            <p>Submit the exam?</p>
           </Modal>
         </div>
       </div>

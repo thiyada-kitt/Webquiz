@@ -10,7 +10,6 @@ import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/common/Home";
-// import Exams from "./pages/admin/Exams";
 import Exams from "./pages/user/Exams";
 import AdminExams from "./pages/admin/Exams";
 import UserAddEditExam from "./pages/user/Exams/AddEditExam";

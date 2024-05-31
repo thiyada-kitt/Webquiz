@@ -10,7 +10,7 @@ const { Option } = Select;
 
 function UserReports() {
   const [reportsData, setReportsData] = useState([]);
-  const [verdictFilter, setVerdictFilter] = useState(null); // Add verdictFilter and setVerdictFilter
+  const [verdictFilter, setVerdictFilter] = useState(null); 
   const dispatch = useDispatch();
 
   const columns = [
@@ -74,8 +74,6 @@ function UserReports() {
 
   const filteredReports = reportsData.filter((report) => {
     if (verdictFilter && verdictFilter !== "All") {
-      // Filter by verdict
-      // Assuming verdict data is available in each report object
       return report.result.verdict === verdictFilter;
     }
     return true;

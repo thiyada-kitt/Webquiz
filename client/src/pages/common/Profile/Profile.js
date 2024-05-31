@@ -7,9 +7,9 @@ import { useDispatch } from "react-redux";
 
 function App(){
 
-    const [userInfo, setUserInfo] = useState([]); // Fetch Hook
-    const [password, setPassword] = useState("") // Password Hook
-    const [confirmedPassword, setConfirmedPassword] = useState("") // Confirmed password hook
+    const [userInfo, setUserInfo] = useState([]); 
+    const [password, setPassword] = useState("")
+    const [confirmedPassword, setConfirmedPassword] = useState("")
     const [isChangePassword, setIsChangePassword] = useState(false);
     
     const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function App(){
 
     const passwordChange = (evt) => {
         setPassword(evt.target.value)
-        setUserInfo({...userInfo, password: evt.target.value}) // useState change before submit
+        setUserInfo({...userInfo, password: evt.target.value}) 
     }
 
     const confirmedPasswordChange = (evt) => {
@@ -28,12 +28,11 @@ function App(){
     }
 
     const togglePasswordChange = () => { 
-      // updatedAt setUserInfo : brute force attempt to change password
       if (isChangePassword){
-        setUserInfo({...userInfo, createdAt: false}) // Will not updated password (ref: Webquiz\server\routes\usersRoute.js)
+        setUserInfo({...userInfo, createdAt: false}) 
       }
       else{
-        setUserInfo({...userInfo, createdAt: true}) // Update password
+        setUserInfo({...userInfo, createdAt: true}) 
        } 
       setIsChangePassword((currentBool)  => !currentBool);
     }
@@ -41,12 +40,12 @@ function App(){
       try {
         dispatch(ShowLoading());
         if (isChangePassword){
-          if (password === "" || confirmedPassword === ""){ // Check if password and confirmed password is not empty
+          if (password === "" || confirmedPassword === ""){ 
             message.error("Please fill in passwords.");
             dispatch(HideLoading());
             return;
           }
-          if (password !== confirmedPassword){ // Check if password and confirmed password is equivalent to each other
+          if (password !== confirmedPassword){
             message.error("Passwords do not match!");
             dispatch(HideLoading());
             return;
@@ -73,7 +72,7 @@ function App(){
           const response = await getUserInfo();
           dispatch(HideLoading());
           if (response.success) {
-            setUserInfo(response.data) // setState to fetch hook
+            setUserInfo(response.data) 
           } else {
             message.error(response.message);
           }

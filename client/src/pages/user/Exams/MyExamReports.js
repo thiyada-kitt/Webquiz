@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../../../components/PageTitle";
-import { message, Table, Select, Button } from "antd";
+import { message, Table, Select, Row, Col, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getReportsByExam } from "../../../apicalls/reports";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
-function MyExamReports({ examId, exam, examName }) {
+function MyExamReports() {
   const [reportsData, setReportsData] = useState([]);
-  const [verdictFilter, setVerdictFilter] = useState("All");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { examId, examName } = useParams();  
+  const initialFilters = {
+    verdict: "All",
+  };
+  const [filters, setFilters] = useState(initialFilters);
+  
   const columns = [
     {
       title: "Username",
       dataIndex: "username",
       render: (text, record) => <>{record.user.name}</>,
-    },
-    {
-      title: "Total Marks",
-      dataIndex: "totalQuestions",
-      render: (text, record) => <>{record.exam.totalMarks}</>,
-    },
-    {
-      title: "Passing Marks",
-      dataIndex: "correctAnswers",
-      render: (text, record) => <>{record.exam.passingMarks}</>,
     },
     {
       title: "Obtained Marks",
@@ -42,6 +36,23 @@ function MyExamReports({ examId, exam, examName }) {
       render: (text, record) => <>{record.result.verdict}</>,
     },
     {
+      title: "Duration",
+      dataIndex: "timeUsed",
+      render: (text, record) => {
+        const timeUsed = record.result.timeUsed;
+        if (timeUsed === null) {
+          return "-";
+        }
+        const minutes = ("0" + Math.floor(timeUsed / 60)).slice(-2);
+        const seconds = ("0" + (timeUsed % 60)).slice(-2);
+        return (
+          <>
+            {minutes}:{seconds}
+          </>
+        );
+      },
+    },
+    {
       title: "Date",
       dataIndex: "date",
       render: (text, record) => (
@@ -50,50 +61,62 @@ function MyExamReports({ examId, exam, examName }) {
     }
   ];
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        if (!examId) return; // ตรวจสอบว่า examId ไม่ใช่ undefined หรือ null
-        dispatch(ShowLoading());
-        const response = await getReportsByExam(examId);
-        if (response.success) {
-          setReportsData(response.data);
-        } else {
-          message.error(response.message);
-        }
-        dispatch(HideLoading());
-      } catch (error) {
-        dispatch(HideLoading());
-        message.error(error.message);
+  const getData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await getReportsByExam(examId);
+      if (response.success) {
+        setReportsData(response.data);
+      } else {
+        message.error(response.message);
       }
-    };
-    getData();
-  }, [dispatch, examId]);
+      dispatch(HideLoading());
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (examId) {
+      getData();
+    }
+  }, [examId]);
 
   const handleVerdictChange = (value) => {
-    setVerdictFilter(value);
+    setFilters({ ...filters, verdict: value });
   };
 
   const filteredReports = reportsData.filter((report) => {
-    if (verdictFilter !== "All") {
-      return report.result.verdict === verdictFilter;
+    if (filters.verdict !== "All") {
+      return report.result.verdict === filters.verdict;
     }
     return true;
   });
 
   return (
     <div>
-      <div className="flex gap-2 flex justify-between mt-2 items-end">
-        <PageTitle title={`Report in ${examName}`} />
-        <Select defaultValue="All" onChange={handleVerdictChange} style={{ width: 150 }}>
-          <Option value="All">All Verdicts</Option>
-          <Option value="Pass">Pass</Option>
-          <Option value="Fail">Fail</Option>
-        </Select>
-        <Button className="primary-contained-btn" onClick={() => navigate("/user/exams")} style={{ marginRight: "auto" }}>Back to exam</Button>
-      </div>
+      <Row justify="space-between" align="middle">
+        <Col>
+          <PageTitle title={`Report in Exam`} />
+        </Col>
+        <Col>
+          <Select
+            value={filters.verdict}
+            style={{ width: 120 }}
+            onChange={handleVerdictChange}
+          >
+            <Option value="All">All Verdicts</Option>
+            <Option value="Pass">Pass</Option>
+            <Option value="Fail">Fail</Option>
+          </Select>
+          <Button className="primary-contained-btn" onClick={() => navigate("/user/exams")} style={{ marginLeft: 10 }}>
+            Back to exam
+          </Button>
+        </Col>
+      </Row>
       <div className="divider"></div>
-      <Table columns={columns} dataSource={filteredReports} rowKey={(record) => record._id} />
+      <Table columns={columns} dataSource={filteredReports} className="mt-2" rowKey={(record) => record._id} />
     </div>
   );
 }
