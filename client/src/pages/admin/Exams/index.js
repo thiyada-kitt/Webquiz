@@ -117,6 +117,18 @@ function Exams() {
         </div>
       ),
     },
+    {
+      title: "Reports",
+      dataIndex: "reports",
+      render: (text, record) => (
+        <div className="flex gap-2">
+          <i
+            className="ri-bar-chart-line"
+            onClick={() => navigate(`/admin/exams/myexam/${record._id}`)}
+          ></i>
+        </div>
+      ),
+    }
   ];
 
   useEffect(() => {

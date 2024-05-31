@@ -129,6 +129,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+          path="/admin/exams/myexam/:examId"
+          element={
+            <ProtectedRoute>
+              <MyExamReports />
+            </ProtectedRoute>
+            }
+          />
 
           {/*Global routes*/}
           <Route 
