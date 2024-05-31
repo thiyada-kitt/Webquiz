@@ -141,7 +141,7 @@ router.post("/update-user-info", authMiddleware, async(req, res) => {
         await Admin.findOneAndUpdate({email: req.body.email}, {name: req.body.name, password: req.body.password});
       }
     }
-    else{ // Password doesn't change, update only username
+    else{ 
       await User.findByIdAndUpdate(req.body._id, {name: req.body.name});
       if (req.body.isAdmin === true){
         await Admin.findOneAndUpdate({email: req.body.email}, {name: req.body.name});
