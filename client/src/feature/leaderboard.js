@@ -158,8 +158,8 @@ function App() {
       <PageTitle title="Leaderboard" />
       <div className="divider"></div>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <AutoComplete
-          style={{ width: 200, marginRight: 8, marginTop: 8 }}
+        <AutoComplete 
+          style={{ width: 400, marginRight: 8, marginTop: 8 }}
           options={filteredExamNames.map((exam) => ({
             value: exam.name,
             label: exam.name,
@@ -173,10 +173,12 @@ function App() {
           }
         >
           <Input.Search
-            placeholder="Exam name. . ."
+            placeholder="Search Exam. . ."
             onSearch={handleSearch}
             onPressEnter={handleSearch}
-          />
+            className="primary-contained-btn"
+            enterButton="Search" 
+            />
         </AutoComplete>
         <Button type="primary-contained-button" onClick={handleClear} style={{ marginLeft: 8, marginTop: 8 }}>
           Clear
