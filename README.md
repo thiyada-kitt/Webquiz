@@ -7,6 +7,9 @@ The structure used to make a website is **mern stack**
 * Node.js
 * Database: NoSQL
 > This website is intended to allow users to create their own quizzes and review knowledge
+## Demo
+- Video clip on demonstration: [click here](https://drive.google.com/drive/folders/1iXr_lVKvwmBkX7G6LvpIloT61BcOKjYA?usp=sharing)
+
 ---
 ### Feature in quizuzz!
 - Access to the quiz
