@@ -1,4 +1,4 @@
-## This Project Application is Quizuzz!
+## This Project Web Application is Quizuzz!
 ### For the course Web programming II/2566
 The structure used to make a website is **mern stack**
 * MongoDB
