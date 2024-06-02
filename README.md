@@ -4,6 +4,7 @@ The structure used to make a website is **mern stack**
 * MongoDB
 * Express.js
 * React
+* Redux/toolkit
 * Node.js
 * Database: NoSQL
 > This website is intended to allow users to create their own quizzes and review knowledge
