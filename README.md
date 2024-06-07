@@ -1,12 +1,16 @@
-## This Project Application is Quizuzz!
+## This Project Web Application is Quizuzz!
 ### For the course Web programming II/2566
 The structure used to make a website is **mern stack**
 * MongoDB
 * Express.js
 * React
+* Redux/toolkit
 * Node.js
 * Database: NoSQL
 > This website is intended to allow users to create their own quizzes and review knowledge
+## Demo
+- Video clip on demonstration: [click here](https://drive.google.com/file/d/134t8ODA9Wru407n4BXGLQOOGvDhJWm1q/view?usp=sharing)
+
 ---
 ### Feature in quizuzz!
 - Access to the quiz
@@ -18,7 +22,7 @@ The structure used to make a website is **mern stack**
 - A report is kept every time a quiz is played.
 - Leaderboard
 ---
-### **The website is divided into 2 roles**
+### The website is divided into 2 roles
 
 **Admin:** Admin can create quizzes. Add questions to the test Edit the test Edit an answer or question all in the system Access the leaderboard of every question set. and can view reports of all users
 

@@ -35,13 +35,41 @@ function Register() {
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
-            <Form.Item name="name" label="Name">
+            <Form.Item
+              name="name"
+              label="Name"
+            >
               <input type="text" />
             </Form.Item>
-            <Form.Item name="email" label="Email">
+            <Form.Item
+              name="email"
+              label="Email"
+            >
               <input type="email" />
             </Form.Item>
-            <Form.Item name="password" label="Password">
+            <Form.Item
+              name="password"
+              label="Password"
+            >
+              <input type="password" />
+            </Form.Item>
+            <Form.Item
+              name="confirmPassword"
+              label="Confirm Password"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                { required: true, message: "Please confirm your password!" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('Passwords do not match!'));
+                  },
+                }),
+              ]}
+            >
               <input type="password" />
             </Form.Item>
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PageTitle from "../components/PageTitle";
-import { message, Table, AutoComplete, Button } from "antd";
+import { message, Table, AutoComplete, Button, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../redux/loaderSlice";
 import { getAllExams } from "../apicalls/exams";
 import { getLeaderboards } from "../apicalls/reports";
 import "../stylesheets/custom-components.css";
-import { RiMedalLine, RiMedal2Line, RiMedal3Line } from 'react-icons/ri';
+import { RiMedalLine, RiMedal2Line} from 'react-icons/ri';
 
 function App() {
   const [quiz, setQuiz] = useState([]);
@@ -42,7 +42,7 @@ function App() {
       render: (text, record) => <>{record.user.name}</>,
     },
     {
-      title:<div style={{ textAlign: 'center' }}>Score,</div>, 
+      title:<div style={{ textAlign: 'center' }}>Score</div>, 
       dataIndex: "correctAnswers",
       render: (text, record) => (
         <>
@@ -104,7 +104,7 @@ function App() {
       userName: "",
     });
     setSearchInput("");
-    setSetofResults([]); 
+    setSetofResults([]);
   };
   
   const getData = async (filters) => {
@@ -153,38 +153,39 @@ function App() {
     setFilteredExamNames(filteredNames);
   };
 
-  const handleSelectExam = (exam) => {
-    setSearchInput(exam.name);
-    updateSelect(exam.name);
-  };
-
   return (
     <div>
       <PageTitle title="Leaderboard" />
       <div className="divider"></div>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <AutoComplete
-          style={{ width: 200, marginRight: 8, marginTop: 8 }}
+        <AutoComplete 
+          style={{ width: 400, marginRight: 8, marginTop: 8 }}
           options={filteredExamNames.map((exam) => ({
             value: exam.name,
             label: exam.name,
           }))}
           onSelect={(value) => updateSelect(value)}
           onChange={(value) => handleSearchInputChange(value)}
-          placeholder="Exam name..."
+          placeholder=" "
           value={searchInput}
-        />
-        <div>
-          <Button type="primary-outlined-btn" onClick={handleClear} style={{ marginTop: 8 }}>
-            Clear
-          </Button>
-          <Button type="primary-contained-btn" onClick={handleSearch} style={{ marginLeft: 8, marginTop: 8 }}>
-            Search
-          </Button>
-        </div>
+          filterOption={(inputValue, option) =>
+            option.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
+          }
+        >
+          <Input.Search
+            placeholder="Search Exam. . ."
+            onSearch={handleSearch}
+            onPressEnter={handleSearch}
+            className="primary-contained-btn"
+            enterButton="Search" 
+            />
+        </AutoComplete>
+        <Button type="primary-contained-button" onClick={handleClear} style={{ marginLeft: 8, marginTop: 8 }}>
+          Clear
+        </Button>
       </div>
 
-      <div className="grid overflow-y-auto grid-flow-row"  style={{ marginTop: 8 }}>
+      <div className="grid overflow-y-auto grid-flow-row" style={{ marginTop: 8 }}>
         <Table columns={columns} dataSource={setofResults} />
       </div>
     </div>
