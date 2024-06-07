@@ -1,31 +1,25 @@
-import { Col, Form, message, Row, Select, Table } from "antd";
+import { Col, Form, message, Row, Select, Table, Tabs } from "antd";
 import React, { useEffect } from "react";
-import {
-  addExam,
-  deleteQuestionById,
-  editExamById,
-  getExamById,
-} from "../../../apicalls/exams";
+import { addExam, deleteQuestionById, editExamById, getExamById, getDraftQuestion, addMultiQuestion } from "../../../apicalls/exams";
 import PageTitle from "../../../components/PageTitle";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
-import { Tabs } from "antd";
 import AddEditQuestion from "./AddEditQuestion";
+import AddQuestion from "./AddQuestion";
 import { getUserInfo } from "../../../apicalls/users";
+
 const { TabPane } = Tabs;
 
 function AddEditExam() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [examData, setExamData] = React.useState(null);
-  const [showAddEditQuestionModal, setShowAddEditQuestionModal] =
-    React.useState(false);
+  const [showAddEditQuestionModal, setShowAddEditQuestionModal] = React.useState(false);
   const [selectedQuestion, setSelectedQuestion] = React.useState(null);
   const params = useParams();
   const [form] = Form.useForm();
-  
+
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
@@ -36,16 +30,26 @@ function AddEditExam() {
           ...values,
           examId: params.id,
         });
+        if (response.success) {
+          message.success(response.message);
+          navigate("/admin/exams");
+        } else {
+          message.error(response.message);
+        }
       } else {
-        response = await addExam({...values,
+        const response = await addExam({
+          ...values,
           user: user,
         });
-      }
-      if (response.success) {
-        message.success(response.message);
-        navigate("/user/exams");
-      } else {
-        message.error(response.message);
+        const response2 = await addMultiQuestion({
+          user: user,
+        });
+        if (response.success && response2.success) {
+          message.success(response.message);
+          navigate("/admin/exams");
+        } else {
+          message.error(response.message);
+        }
       }
       dispatch(HideLoading());
     } catch (error) {
@@ -57,9 +61,12 @@ function AddEditExam() {
   const getExamData = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await getExamById({
-        examId: params.id,
-      });
+      let response;
+      if (params.id) {
+        response = await getExamById({ examId: params.id });
+      } else if (user) {
+        response = await getDraftQuestion({ user: user });
+      }
       dispatch(HideLoading());
       if (response.success) {
         setExamData(response.data);
@@ -71,12 +78,6 @@ function AddEditExam() {
       message.error(error.message);
     }
   };
-
-  useEffect(() => {
-    if (params.id) {
-      getExamData();
-    }
-  }, []);
 
   const deleteQuestion = async (questionId) => {
     try {
@@ -107,22 +108,18 @@ function AddEditExam() {
       title: "Options",
       dataIndex: "options",
       render: (text, record) => {
-        return Object.keys(record.options).map((key) => {
-          return (
-            <div key={key}>
-              {key} : {record.options[key]}
-            </div>
-          );
-        });
+        return Object.keys(record.options).map((key) => (
+          <div key={key}>
+            {key} : {record.options[key]}
+          </div>
+        ));
       },
     },
     {
       title: "Correct Option",
       dataIndex: "correctOption",
       render: (text, record) => {
-        return ` ${record.correctOption} : ${
-          record.options[record.correctOption]
-        }`;
+        return `${record.correctOption} : ${record.options[record.correctOption]}`;
       },
     },
     {
@@ -147,7 +144,7 @@ function AddEditExam() {
       ),
     },
   ];
-  
+
   const getUserData = async () => {
     try {
       dispatch(ShowLoading());
@@ -169,6 +166,18 @@ function AddEditExam() {
     getUserData();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      getExamData();
+    }
+  }, [user, params.id]);
+
+  const onTabClick = (activeKey) => {
+    if (activeKey === "2") {
+      getExamData();
+    }
+  };
+
   return (
     <div>
       <PageTitle title={params.id ? "Edit Exam" : "Add Exam"} />
@@ -176,16 +185,24 @@ function AddEditExam() {
 
       {(examData || !params.id) && (
         <Form layout="vertical" form={form} onFinish={onFinish} initialValues={examData}>
-          <Tabs defaultActiveKey="1">
+          <Tabs defaultActiveKey="1" onTabClick={onTabClick}>
             <TabPane tab="Exam Details" key="1">
               <Row gutter={[10, 10]}>
                 <Col span={8}>
-                  <Form.Item label="Exam Name" name="name">
+                  <Form.Item
+                    label="Exam Name"
+                    name="name"
+                    rules={[{ required: true, message: 'Please enter exam name' }]}
+                  >
                     <input type="text" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Category" name="category">
+                  <Form.Item
+                    label="Category"
+                    name="category"
+                    rules={[{ required: true, message: 'Please select category' }]}
+                  >
                     <select>
                       <option value="" hidden>Select Category</option>
                       <option value="Knowledge">Knowledge</option>
@@ -195,7 +212,11 @@ function AddEditExam() {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Mode" name="mode" >
+                  <Form.Item
+                    label="Mode"
+                    name="mode"
+                    rules={[{ required: true, message: 'Please select mode' }]}
+                  >
                     <select onChange={(e) => form.setFieldsValue({ duration: e.target.value === 'NoTimer' ? null : form.getFieldValue('duration') })}>
                       <option value="" hidden>Select Mode</option>
                       <option value="NoTimer">NoTimer</option>
@@ -221,16 +242,24 @@ function AddEditExam() {
                       },
                     ]}
                   >
+                    <input type="number" disabled={form.getFieldValue('mode') === 'NoTimer'} />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item
+                    label="Total Marks"
+                    name="totalMarks"
+                    rules={[{ required: true, message: 'Please enter total marks' }]}
+                  >
                     <input type="number" />
                   </Form.Item>
                 </Col>
                 <Col span={8}>
-                  <Form.Item label="Total Marks" name="totalMarks">
-                    <input type="number" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item label="Passing Marks" name="passingMarks">
+                  <Form.Item
+                    label="Passing Marks"
+                    name="passingMarks"
+                    rules={[{ required: true, message: 'Please enter passing marks' }]}
+                  >
                     <input type="number" />
                   </Form.Item>
                 </Col>
@@ -239,7 +268,7 @@ function AddEditExam() {
                 <button
                   className="primary-outlined-btn"
                   type="button"
-                  onClick={() => navigate("/user/exams")}
+                  onClick={() => navigate("/admin/exams")}
                 >
                   Cancel
                 </button>
@@ -248,29 +277,27 @@ function AddEditExam() {
                 </button>
               </div>
             </TabPane>
-            {params.id && (
-              <TabPane tab="Questions" key="2">
-                <div className="flex justify-end">
-                  <button
-                    className="primary-outlined-btn"
-                    type="button"
-                    onClick={() => setShowAddEditQuestionModal(true)}
-                  >
-                    Add Question
-                  </button>
-                </div>
+            <TabPane tab={params.id ? "Questions" : "Questions"} key="2">
+              <div className="flex justify-end">
+                <button
+                  className="primary-outlined-btn"
+                  type="button"
+                  onClick={() => setShowAddEditQuestionModal(true)}
+                >
+                  Add Question
+                </button>
+              </div>
 
-                <Table
-                  columns={questionsColumns}
-                  dataSource={examData?.questions || []}
-                />
-              </TabPane>
-            )}
+              <Table
+                columns={questionsColumns}
+                dataSource={examData?.questions || examData}
+              />
+            </TabPane>
           </Tabs>
         </Form>
       )}
 
-      {showAddEditQuestionModal && (
+      {showAddEditQuestionModal && params.id ? (
         <AddEditQuestion
           setShowAddEditQuestionModal={setShowAddEditQuestionModal}
           showAddEditQuestionModal={showAddEditQuestionModal}
@@ -279,6 +306,16 @@ function AddEditExam() {
           selectedQuestion={selectedQuestion}
           setSelectedQuestion={setSelectedQuestion}
         />
+      ) : (
+        showAddEditQuestionModal && (
+          <AddQuestion
+            setShowAddEditQuestionModal={setShowAddEditQuestionModal}
+            showAddEditQuestionModal={showAddEditQuestionModal}
+            refreshData={getExamData}
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
+          />
+        )
       )}
     </div>
   );
