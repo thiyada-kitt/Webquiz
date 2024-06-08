@@ -26,28 +26,34 @@ function App() {
       render: (text, record, index) => {
         switch (index) {
           case 0:
-            return <RiMedalLine style={{ color: 'gold' }} />;
+            return <div style={{ textAlign: 'center' }}>
+                      <RiMedalLine style={{ color: 'gold' }} />
+                   </div>;
           case 1:
-            return <RiMedal2Line style={{ color: 'silver' }} />;
+            return <div style={{ textAlign: 'center' }}>
+                      <RiMedal2Line style={{ color: 'silver' }} />
+                   </div>;
           case 2:
-            return <RiMedal2Line style={{ color: 'bronze' }} />;
+            return <div style={{ textAlign: 'center' }}>
+                        <RiMedal2Line style={{ color: '#b08d57' }} />
+                   </div>;
           default:
-            return `#${index + 1}`;
+            return <div style={{ textAlign: 'center' }}>{index + 1}</div>;
         }
       },
     },
     {
       title:<div style={{ textAlign: 'center' }}>Username</div>, 
       dataIndex: "userName",
-      render: (text, record) => <>{record.user.name}</>,
+      render: (text, record) => <div style={{ textAlign: 'center' }}>{record.user.name}</div>,
     },
     {
       title:<div style={{ textAlign: 'center' }}>Score</div>, 
       dataIndex: "correctAnswers",
       render: (text, record) => (
-        <>
+        <div style={{ textAlign: 'center' }}>
           {record.result.correctAnswers.length}/{record.exam.totalMarks}
-        </>
+        </div>
       ),
     },
     {
@@ -55,15 +61,15 @@ function App() {
       dataIndex: "timeUsed",
       render: (text, record) => {
         if (record.exam.duration === null) {
-          return "-";
+          return <div style={{ textAlign: 'center' }}>-</div>;
         }
         const timeUsed = record.result.timeUsed;
         const minutes = ("0" + Math.floor(timeUsed / 60)).slice(-2);
         const seconds = ("0" + (timeUsed % 60)).slice(-2);
         return (
-          <>
+          <div style={{ textAlign: 'center' }}>
             {minutes}:{seconds}
-          </>
+          </div>
         );
       },
     },
