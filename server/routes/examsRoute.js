@@ -89,7 +89,7 @@ router.post("/delete-exam-by-id", authMiddleware, async (req, res) => {
   try {
     await Exam.findByIdAndDelete(req.body.examId);
     await Question.deleteMany({exam : req.body.examId}); // delete all questions in exam
-    await Report.deleteMany({exam: req.body.examID});
+    await Report.deleteMany({exam: req.body.examId});
     res.send({
       message: "Exam deleted successfully",
       success: true,
