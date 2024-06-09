@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Exam = require("../models/examModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const Question = require("../models/questionModel");
+const Report = require("../models/reportModel");
 
 // add exam
 
@@ -88,6 +89,7 @@ router.post("/delete-exam-by-id", authMiddleware, async (req, res) => {
   try {
     await Exam.findByIdAndDelete(req.body.examId);
     await Question.deleteMany({exam : req.body.examId}); // delete all questions in exam
+    await Report.deleteMany({exam: req.body.examID});
     res.send({
       message: "Exam deleted successfully",
       success: true,

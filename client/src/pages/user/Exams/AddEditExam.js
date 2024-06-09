@@ -32,7 +32,7 @@ function AddEditExam() {
         });
         if (response.success) {
           message.success(response.message);
-          navigate("/admin/exams");
+          navigate("/user/exams");
         } else {
           message.error(response.message);
         }
@@ -46,7 +46,7 @@ function AddEditExam() {
         });
         if (response.success && response2.success) {
           message.success(response.message);
-          navigate("/admin/exams");
+          navigate("/user/exams");
         } else {
           message.error(response.message);
         }
@@ -268,7 +268,7 @@ function AddEditExam() {
                 <button
                   className="primary-outlined-btn"
                   type="button"
-                  onClick={() => navigate("/admin/exams")}
+                  onClick={() => navigate("/user/exams")}
                 >
                   Cancel
                 </button>
